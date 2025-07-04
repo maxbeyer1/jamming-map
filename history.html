@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Historical Data - SMAP Geopolitical Monitor</title>
+    <link rel="stylesheet" href="styles/index.css">
+    <link rel="stylesheet" href="styles/history.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="site-branding">
+                <div class="site-logo">📡</div>
+                <h1 class="site-title">SMAP Geopolitical Monitor</h1>
+            </div>
+            <nav class="main-navigation">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link">Dashboard</a></li>
+                    <li><a href="history.html" class="nav-link current" aria-current="page">History</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="history-main">
+        <div class="history-header">
+            <div class="page-info">
+                <h2 class="page-title">Historical Data</h2>
+            </div>
+            <div class="page-actions">
+                <button type="button" class="action-btn export-btn">Export Data</button>
+                <button type="button" class="action-btn settings-btn">Settings</button>
+            </div>
+        </div>
+
+        <div class="history-controls">
+            <div class="controls-left">
+                <div class="date-controls">
+                    <h3 class="control-section-title">Date Range</h3>
+                    <div class="date-inputs">
+                        <div class="date-input-group">
+                            <label for="date-from" class="date-label">From:</label>
+                            <input type="date" id="date-from" name="date-from" class="date-input" value="2025-06-04">
+                        </div>
+                        <div class="date-input-group">
+                            <label for="date-to" class="date-label">To:</label>
+                            <input type="date" id="date-to" name="date-to" class="date-input" value="2025-07-04">
+                        </div>
+                    </div>
+                </div>
+                <div class="legend-section">
+                    <h3 class="legend-title">Temperature Legend</h3>
+                    <ul class="legend-list">
+                        <li class="legend-item">
+                            <span class="legend-color low"></span>
+                            <span class="legend-label">Normal (&lt;250K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color medium"></span>
+                            <span class="legend-label">Elevated (250-300K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color high"></span>
+                            <span class="legend-label">High (300-350K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color critical"></span>
+                            <span class="legend-label">Critical (&gt;350K)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="controls-right">
+                <div class="map-controls">
+                    <h3 class="control-title">Map Controls</h3>
+                    <div class="control-group">
+                        <button type="button" class="control-btn zoom-in" aria-label="Zoom in on map">+</button>
+                        <button type="button" class="control-btn zoom-out" aria-label="Zoom out on map">-</button>
+                        <button type="button" class="control-btn refresh" aria-label="Reload map data">↻</button>
+                        <select id="power-filter" class="power-filter" aria-label="Filter data by power level">
+                            <option value="all">All Levels</option>
+                            <option value="high">Elevated (&gt;250K)</option>
+                            <option value="extreme">High (&gt;300K)</option>
+                            <option value="critical">Critical (&gt;350K)</option>
+                        </select>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="map-container">
+            <div class="world-map">
+                <img src="https://placehold.co/1000x500" alt="Historical world map showing SMAP temperature data over time with color-coded regions indicating power level anomalies" class="map-placeholder"/>
+                <div class="time-slider-overlay">
+                    <div class="time-slider-container">
+                        <label for="time-slider" class="time-slider-label">Timeline:</label>
+                        <div class="slider-controls">
+                            <span class="time-start">Jun 4, 2025</span>
+                            <input type="range" id="time-slider" class="time-slider" min="0" max="30" value="15" aria-label="Navigate through historical timeline">
+                            <span class="time-end">Jul 4, 2025</span>
+                        </div>
+                        <div class="current-time">Current: Jun 19, 2025</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="update-status">Last Update: July 04, 2025 2:36:79 PM</span>
+            </div>
+            <div class="footer-right">
+                <a href="https://earthdata.nasa.gov/data/catalog/nsidc-ecs-spl1btb-nrt-105" class="external-link" target="_blank" rel="noopener noreferrer">
+                    External Link to NASA Data
+                </a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
