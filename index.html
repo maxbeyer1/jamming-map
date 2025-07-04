@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>SMAP Monitor - Dashboard</title>
+    <link rel="stylesheet" href="styles/index.css">
+</head>
+<body>
+    <header class="site-header">
+        <div class="header-content">
+            <div class="site-branding">
+                <div class="site-logo">📡</div>
+                <h1 class="site-title">SMAP Geopolitical Monitor</h1>
+            </div>
+            <nav class="main-navigation">
+                <ul class="nav-menu">
+                    <li><a href="index.html" class="nav-link current" aria-current="page">Dashboard</a></li>
+                    <li><a href="history.html" class="nav-link">History</a></li>
+                    <li><a href="about.html" class="nav-link">About</a></li>
+                    <li><a href="contact.html" class="nav-link">Contact</a></li>
+                </ul>
+            </nav>
+        </div>
+    </header>
+
+    <main class="dashboard-main">
+        <div class="dashboard-header">
+            <div class="page-info">
+                <h2 class="page-title">Live Dashboard</h2>
+                <div class="status-indicator">
+                    <span class="status-dot online"></span>
+                    <span class="status-text">Online</span>
+                </div>
+            </div>
+            <div class="controls-and-legend">
+                <div class="map-controls">
+                    <h3 class="control-title">Controls</h3>
+                    <div class="control-group">
+                        <button type="button" class="control-btn zoom-in">+</button>
+                        <button type="button" class="control-btn zoom-out">-</button>
+                        <button type="button" class="control-btn refresh">↻</button>
+                        <select id="power-filter" class="power-filter">
+                            <option value="all">All Levels</option>
+                            <option value="high">Elevated (&gt;>250K)</option>
+                            <option value="extreme">High (&gt;>300K)</option>
+                            <option value="critical">Critical (&gt;>350K)</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="legend-section">
+                    <h3 class="legend-title">Temperature Legend</h3>
+                    <ul class="legend-list">
+                        <li class="legend-item">
+                            <span class="legend-color low"></span>
+                            <span class="legend-label">Normal (&lt;250K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color medium"></span>
+                            <span class="legend-label">Elevated (250-300K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color high"></span>
+                            <span class="legend-label">High (300-350K)</span>
+                        </li>
+                        <li class="legend-item">
+                            <span class="legend-color critical"></span>
+                            <span class="legend-label">Critical (&gt;350K)</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <div class="dashboard-content">
+            <div class="map-container">
+                <div class="world-map">
+                    <img src="https://placehold.co/800x400" alt="World map showing SMAP temperature data visualization with color-coded regions" class="map-image">
+                </div>
+            </div>
+
+            <aside class="stats-panel">
+                <h3 class="stats-title">Location Details</h3>
+                <div class="stats-content">
+                    <div class="stats-item">
+                        <span class="stats-label">Coordinates:</span>
+                        <span class="stats-value">42.0565° N, 87.6753° W</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Temperature:</span>
+                        <span class="stats-value critical-reading">353.7 K</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Detection Time:</span>
+                        <span class="stats-value">2025-07-04 14:23:15 UTC</span>
+                    </div>
+                    <div class="stats-item">
+                        <span class="stats-label">Confidence:</span>
+                        <span class="stats-value">87%</span>
+                    </div>
+                </div>
+                <div class="location-photos">
+                    <h4 class="photos-title">Location Photos</h4>
+                    <img src="https://placehold.co/300x200" alt="Satellite imagery of the selected location showing temperature anomaly" class="location-photo">
+                </div>
+            </aside>
+        </div>
+    </main>
+
+    <footer class="site-footer">
+        <div class="footer-content">
+            <div class="footer-left">
+                <span class="update-status">Last Update: July 04, 2025 2:36:79 PM</span>
+            </div>
+            <div class="footer-right">
+                <a href="https://earthdata.nasa.gov/data/catalog/nsidc-ecs-spl1btb-nrt-105" class="external-link" target="_blank" rel="noopener noreferrer">
+                    NASA SMAP Data Source
+                </a>
+                <span class="footer-separator">|</span>
+                <span class="disclaimer">Data updated every 15 minutes</span>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
