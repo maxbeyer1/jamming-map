@@ -464,3 +464,261 @@ a:focus {
   outline: 2px solid #3498db;
   outline-offset: 2px;
 }
+
+@media screen and (max-width: 767px) {
+  /* Header adjustments */
+  .header-content {
+    flex-direction: column;
+    gap: 1rem;
+    padding: 0 0.75rem;
+  }
+
+  .site-branding {
+    justify-content: center;
+  }
+
+  .site-title {
+    font-size: 1.1rem;
+  }
+
+  .main-navigation {
+    margin-left: 0; /* Override desktop right-alignment */
+    width: 100%;
+  }
+
+  .nav-menu {
+    flex-direction: column;
+    gap: 0.5rem;
+    width: 100%;
+    text-align: center;
+    align-items: center;
+  }
+
+  .nav-link {
+    display: block;
+    padding: 0.75rem;
+  }
+
+  /* Dashboard adjustments */
+  .dashboard-main {
+    padding: 1rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .page-title {
+    font-size: 1.5rem;
+  }
+
+  .controls-and-legend {
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .map-controls .control-group {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .map-controls .power-filter {
+    width: 100%;
+    margin-left: 0;
+    margin-top: 0.5rem;
+  }
+
+  /* Dashboard content - single column */
+  .dashboard-content {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .world-map {
+    height: 300px;
+  }
+
+  /* Stats panel adjustments */
+  .stats-panel {
+    order: -1; /* Move stats panel above map */
+    padding: 1rem;
+  }
+
+  .stats-title {
+    font-size: 1rem;
+  }
+
+  /* Footer adjustments */
+  .footer-content {
+    flex-direction: column;
+    gap: 0.5rem;
+    text-align: center;
+    padding: 0 0.75rem;
+  }
+
+  .footer-right {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .footer-separator {
+    display: none;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  /* Header adjustments */
+  .header-content {
+    padding: 0 1rem;
+  }
+
+  .nav-menu {
+    gap: 1.5rem;
+  }
+
+  /* Dashboard adjustments */
+  .dashboard-main {
+    padding: 1.25rem;
+  }
+
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .controls-and-legend {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 1.5rem;
+  }
+
+  /* Dashboard content adjustments */
+  .dashboard-content {
+    grid-template-columns: 1fr 280px;
+    gap: 1.25rem;
+  }
+
+  .world-map {
+    height: 450px;
+  }
+
+  /* Footer adjustments */
+  .footer-content {
+    padding: 0 1rem;
+    flex-wrap: wrap;
+    gap: 1rem;
+  }
+
+  .footer-right {
+    gap: 0.75rem;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+  .header-content,
+  .dashboard-main,
+  .footer-content {
+    max-width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  .dashboard-content {
+    grid-template-columns: 1fr 280px;
+  }
+
+  .world-map {
+    height: 500px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .site-header {
+    padding: 0.5rem 0;
+  }
+
+  .site-title {
+    font-size: 1rem;
+  }
+
+  .site-logo {
+    font-size: 1.25rem;
+  }
+
+  .dashboard-main {
+    padding: 0.75rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .map-controls,
+  .legend-section {
+    padding: 0.75rem;
+  }
+
+  .control-title,
+  .legend-title {
+    font-size: 0.85rem;
+  }
+
+  .map-controls .control-btn {
+    padding: 0.5rem;
+    min-width: 28px;
+    font-size: 0.85rem;
+  }
+
+  .world-map {
+    height: 250px;
+  }
+
+  .stats-panel {
+    padding: 0.75rem;
+  }
+
+  .legend-list {
+    gap: 0.375rem;
+  }
+
+  .legend-item {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (min-resolution: 2dppx) {
+  .status-dot {
+    box-shadow: 0 0 12px rgba(39, 174, 96, 0.4);
+  }
+}
+
+/* Zoom handling */
+@media screen and (max-resolution: 1dppx) {
+  /* Optimize for zoomed out views (50% zoom) */
+  .world-map {
+    min-height: 200px;
+  }
+
+  .stats-panel {
+    min-width: 200px;
+  }
+}
+
+/* Container queries fallback for very wide screens */
+@media screen and (min-width: 1400px) {
+  .header-content,
+  .dashboard-main,
+  .footer-content {
+    max-width: 1400px;
+  }
+}
+
+/* Make sure touch targets remain accessible on mobile */
+@media screen and (max-width: 767px) {
+  .control-btn,
+  .nav-link,
+  .power-filter {
+    min-height: 44px; /* Min touch target size */
+  }
+}
