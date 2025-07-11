@@ -178,6 +178,7 @@
   border-radius: 3px;
   outline: none;
   -webkit-appearance: none; /* Override default Chrome style */
+  appearance: none; /* Standard property for compatibility */
 }
 
 .time-slider::-webkit-slider-thumb {
@@ -204,4 +205,244 @@
   font-size: 12px;
   color: #ccc;
   margin-top: 5px;
+}
+
+@media screen and (max-width: 767px) {
+  .history-main {
+    padding: 1rem;
+  }
+
+  /* Header stacking */
+  .history-header {
+    flex-direction: column;
+    gap: 1rem;
+    align-items: stretch;
+  }
+
+  .page-actions {
+    justify-content: center;
+  }
+
+  .action-btn {
+    flex: 1;
+    max-width: 150px;
+  }
+
+  /* Controls - single column layout */
+  .history-controls {
+    grid-template-columns: 1fr;
+    gap: 1rem;
+  }
+
+  .date-controls,
+  .legend-section,
+  .map-controls {
+    padding: 0.75rem;
+  }
+
+  .control-section-title,
+  .legend-title,
+  .control-title {
+    font-size: 0.9rem;
+  }
+
+  /* Map adjustments */
+  .history-main .map-container {
+    height: 300px;
+  }
+
+  /* Time slider overlay - mobile responsive */
+  .time-slider-overlay {
+    min-width: 280px;
+    left: 10px;
+    right: 10px;
+    transform: none;
+    padding: 10px 15px;
+  }
+
+  .slider-controls {
+    flex-direction: column;
+    gap: 8px;
+  }
+
+  .time-start,
+  .time-end {
+    min-width: auto;
+    text-align: center;
+    order: 2;
+  }
+
+  .time-slider {
+    order: 1;
+    width: 100%;
+  }
+
+  .current-time {
+    font-size: 11px;
+  }
+
+  /* Map controls responsive */
+  .map-controls .control-group {
+    flex-wrap: wrap;
+    gap: 0.75rem;
+  }
+
+  .map-controls .power-filter {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+@media screen and (min-width: 768px) and (max-width: 1023px) {
+  .history-main {
+    padding: 1.25rem;
+  }
+
+  /* Controls - two column layout */
+  .history-controls {
+    grid-template-columns: 1fr 1fr;
+    gap: 1.25rem;
+  }
+
+  /* Legend section spans full width on bottom */
+  .legend-section {
+    grid-column: 1 / -1;
+  }
+
+  /* Map adjustments */
+  .history-main .map-container {
+    height: 400px;
+  }
+
+  /* Time slider overlay - tablet responsive */
+  .time-slider-overlay {
+    min-width: 350px;
+  }
+}
+
+@media screen and (min-width: 1024px) and (max-width: 1199px) {
+  .history-main {
+    max-width: 100%;
+    padding: 0 1.5rem;
+  }
+
+  /* Map adjustments */
+  .history-main .map-container {
+    height: 500px;
+  }
+}
+
+@media screen and (max-width: 479px) {
+  .history-main {
+    padding: 0.75rem;
+  }
+
+  .page-title {
+    font-size: 1.25rem;
+  }
+
+  .action-btn {
+    padding: 0.5rem 0.75rem;
+    font-size: 0.85rem;
+  }
+
+  .date-controls,
+  .legend-section,
+  .map-controls {
+    padding: 0.5rem;
+  }
+
+  .control-section-title,
+  .legend-title,
+  .control-title {
+    font-size: 0.85rem;
+  }
+
+  /* Map adjustments */
+  .history-main .map-container {
+    height: 250px;
+  }
+
+  /* Time slider overlay - extra small mobile */
+  .time-slider-overlay {
+    min-width: 260px;
+    padding: 8px 12px;
+    bottom: 10px;
+  }
+
+  .time-slider-label {
+    font-size: 12px;
+  }
+
+  .time-start,
+  .time-end {
+    font-size: 10px;
+  }
+
+  .current-time {
+    font-size: 10px;
+  }
+
+  /* Map controls */
+  .map-controls .control-btn {
+    padding: 0.5rem;
+    min-width: 28px;
+    font-size: 0.85rem;
+  }
+
+  /* Legend adjustments */
+  .legend-list {
+    gap: 0.375rem;
+  }
+
+  .legend-item {
+    font-size: 0.85rem;
+  }
+}
+
+@media screen and (min-resolution: 2dppx) {
+  .time-slider-overlay {
+    backdrop-filter: blur(2px);
+  }
+}
+
+/* Optimize for zoomed out views */
+@media screen and (max-resolution: 1dppx) {
+  .history-main .map-container {
+    min-height: 200px;
+  }
+
+  .time-slider-overlay {
+    min-width: 300px;
+  }
+}
+
+@media screen and (min-width: 1400px) {
+  .history-main {
+    max-width: 1400px;
+  }
+}
+
+/* Touch targets for mobile accessibility */
+@media screen and (max-width: 767px) {
+  .action-btn,
+  .date-input,
+  .power-filter,
+  .control-btn {
+    min-height: 44px;
+  }
+
+  .time-slider {
+    height: 8px;
+  }
+
+  .time-slider::-webkit-slider-thumb {
+    width: 20px;
+    height: 20px;
+  }
+
+  .time-slider::-moz-range-thumb {
+    width: 20px;
+    height: 20px;
+  }
 }
