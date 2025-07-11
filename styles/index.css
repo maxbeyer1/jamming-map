@@ -263,6 +263,7 @@ body {
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
+  height: 100%; /* Fill grid cell height */
 }
 
 /* .world-map {
@@ -280,10 +281,16 @@ body {
 
 .world-map {
   position: relative;
-  height: 560px;
+  height: 100%; /* Fill container height */
+  min-height: 400px; /* Minimum height fallback */
   border-radius: 8px;
   overflow: hidden;
   box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.map-container {
+  display: flex;
+  flex-direction: column;
 }
 
 #map {
@@ -598,10 +605,7 @@ a:focus {
   .dashboard-content {
     grid-template-columns: 1fr 280px;
     gap: 1.25rem;
-  }
-
-  .world-map {
-    height: 450px;
+    min-height: auto;
   }
 
   /* Footer adjustments */
@@ -626,10 +630,7 @@ a:focus {
 
   .dashboard-content {
     grid-template-columns: 1fr 280px;
-  }
-
-  .world-map {
-    height: 500px;
+    min-height: auto;
   }
 }
 
