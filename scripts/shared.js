@@ -7,7 +7,7 @@ const GOOGLE_MAPS_API_KEY = "AIzaSyAxGvWHl0BZANLg29kWOjVN6OauyfSgg2Q";
 // Get satellite imagery URL w/ Google Maps Static API
 function getSatelliteImageUrl(lat, lon) {
   if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
-    return "https://placehold.co/200x150/1a1a1a/ffffff?text=Configure+API+Key";
+    return "https://placehold.co/200x150?text=Configure+API+Key";
   }
 
   return (
@@ -34,13 +34,6 @@ function getTemperatureColor(temp) {
   if (temp < 300) return "#0080ff";
   if (temp < 350) return "#ff8000";
   return "#ff0000";
-}
-
-function getAnomalyLevel(temp) {
-  if (temp < 250) return "None";
-  if (temp < 300) return "Low";
-  if (temp < 350) return "Medium";
-  return "High";
 }
 
 // Common map utilities
