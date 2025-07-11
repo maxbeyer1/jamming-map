@@ -11,27 +11,16 @@ function initMap() {
   }).setView([30, 0], 2);
 
   // Basemap
-  L.tileLayer("https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png", {
-    attribution:
-      '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors &copy; <a href="https://carto.com/attributions">CARTO</a>',
-    subdomains: "abcd",
-    maxZoom: 19,
-  }).addTo(map);
+  createDarkBasemap().addTo(map);
 
   // Init markers layer
   markersLayer = L.layerGroup().addTo(map);
 
   // Map click handler for stats panel
   map.on("click", onMapClick);
-}
 
-// Functions for zoom buttons
-function zoomIn() {
-  map.zoomIn();
-}
-
-function zoomOut() {
-  map.zoomOut();
+  // Make map global
+  window.map = map;
 }
 
 // Refresh data
@@ -149,13 +138,7 @@ function updateMap() {
     radius: 15,
     blur: 20,
     maxZoom: 10,
-    gradient: {
-      0.0: "#000080",
-      0.3: "#0080ff",
-      0.5: "#ffff00",
-      0.7: "#ff8000",
-      1.0: "#ff0000",
-    },
+    gradient: HEATMAP_GRADIENT,
   }).addTo(map);
 
   // Markers for individual points
@@ -235,52 +218,6 @@ function onMapClick(e) {
   const lat = e.latlng.lat;
   const lon = e.latlng.lng;
   updateLocationDetails(lat, lon, 0); // 0 temp for normal clicks
-}
-
-// Convert temp num to text
-function getTemperatureClass(temp) {
-  if (temp < 250) return "Normal";
-  if (temp < 300) return "Elevated";
-  if (temp < 350) return "High";
-  return "Critical";
-}
-
-// Convert temp num to color
-function getTemperatureColor(temp) {
-  if (temp < 250) return "#000080";
-  if (temp < 300) return "#0080ff";
-  if (temp < 350) return "#ff8000";
-  return "#ff0000";
-}
-
-function getAnomalyLevel(temp) {
-  if (temp < 250) return "None";
-  if (temp < 300) return "Low";
-  if (temp < 350) return "Medium";
-  return "High";
-}
-
-// Show or hide map loading indicator
-// Show = true for show, false for hide
-function showLoading(show) {
-  document.getElementById("map-loading").style.display = show ? "flex" : "none";
-}
-
-function updateTimestamp() {
-  // TODO: Replace with actual last updated instead of current time
-  const now = new Date();
-  const timeString =
-    now.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-    }) +
-    " " +
-    now.toLocaleTimeString("en-US");
-
-  document.getElementById(
-    "last-update"
-  ).textContent = `Last Update: ${timeString}`;
 }
 
 // Init when page loads
