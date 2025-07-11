@@ -3,6 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <title>Historical Data - SMAP Geopolitical Monitor</title>
+
+    <!-- Leaflet CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    />
+
     <link rel="stylesheet" href="styles/index.css" />
     <link rel="stylesheet" href="styles/history.css" />
   </head>
@@ -101,6 +108,7 @@
             <button
               type="button"
               class="control-btn zoom-in"
+              onclick="zoomIn()"
               aria-label="Zoom in on map"
             >
               +
@@ -108,6 +116,7 @@
             <button
               type="button"
               class="control-btn zoom-out"
+              onclick="zoomOut()"
               aria-label="Zoom out on map"
             >
               -
@@ -115,6 +124,7 @@
             <button
               type="button"
               class="control-btn refresh"
+              onclick="refreshData()"
               aria-label="Reload map data"
             >
               ↻
@@ -122,6 +132,7 @@
             <select
               id="power-filter"
               class="power-filter"
+              onchange="filterData()"
               aria-label="Filter data by power level"
             >
               <option value="all">All Levels</option>
@@ -135,6 +146,13 @@
 
       <div class="map-container">
         <div class="world-map">
+          <!-- Interactive map replaces placeholder -->
+          <div id="map"></div>
+          <div id="map-loading" class="map-loading">
+            <span class="loading-spinner">⟳</span>
+            Loading historical data...
+          </div>
+          <!-- Keep placeholder hidden as fallback -->
           <img
             src="https://placehold.co/1000x500"
             alt="Historical world map showing SMAP temperature data over time with color-coded regions indicating power level anomalies"
@@ -168,9 +186,7 @@
     <footer class="site-footer">
       <div class="footer-content">
         <div class="footer-left">
-          <span class="update-status"
-            >Last Update: July 04, 2025 2:36:79 PM</span
-          >
+          <span id="last-update" class="update-status">Loading...</span>
         </div>
         <div class="footer-right">
           <a
@@ -184,5 +200,13 @@
         </div>
       </div>
     </footer>
+
+    <!-- External JavaScript Libraries -->
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <script src="https://cdn.jsdelivr.net/gh/Leaflet/Leaflet.heat/dist/leaflet-heat.js"></script>
+
+    <!-- Your JavaScript -->
+    <script src="scripts/shared.js"></script>
+    <script src="scripts/history.js"></script>
   </body>
 </html>
