@@ -188,6 +188,15 @@ function updateStats() {
   }
 }
 
+// Update the location photo
+function updateLocationPhoto(lat, lon) {
+  const photoElement = document.querySelector(".photo-placeholder");
+  const imageUrl = getSatelliteImageUrl(lat, lon);
+
+  photoElement.src = imageUrl;
+  photoElement.alt = `Satellite view of ${lat.toFixed(4)}°, ${lon.toFixed(4)}°`;
+}
+
 // Show details when user clicks on map
 function updateLocationDetails(lat, lon, temp) {
   document.getElementById("coords-value").textContent = `${lat.toFixed(
@@ -204,13 +213,7 @@ function updateLocationDetails(lat, lon, temp) {
   document.getElementById("time-value").textContent =
     new Date().toISOString().replace("T", " ").substr(0, 19) + " UTC";
 
-  document.getElementById("data-summary").innerHTML = `
-          <p><strong>Classification:</strong> ${tempClass}</p>
-          <p><strong>Anomaly Level:</strong> ${getAnomalyLevel(temp)}</p>
-          <p><strong>Confidence:</strong> ${Math.floor(
-            Math.random() * 20 + 80
-          )}%</p>
-        `;
+  updateLocationPhoto(lat, lon);
 }
 
 // Handle map click
