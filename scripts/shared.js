@@ -1,11 +1,13 @@
 // Common variables
 
 // TODO: REMOVE THIS AND MOVE TO BACKEND
-// Key is restricted but still
+// Key is restricted but still bad practice
 const GOOGLE_MAPS_API_KEY = "AIzaSyAxGvWHl0BZANLg29kWOjVN6OauyfSgg2Q";
 
 // Get satellite imagery URL w/ Google Maps Static API
 function getSatelliteImageUrl(lat, lon) {
+  // Return placeholder if no API key configured
+  // TODO: Remove once backend is set up
   if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
     return "https://placehold.co/200x150?text=Configure+API+Key";
   }
@@ -81,7 +83,7 @@ const HEATMAP_GRADIENT = {
   1.0: "#ff0000", // Red for highest temps
 };
 
-// Initialize dark basemap (reusable)
+// Initialize base map (TODO: Add light mode?)
 function createDarkBasemap() {
   return L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",

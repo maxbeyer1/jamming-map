@@ -10,10 +10,8 @@ function initMap() {
     zoomControl: false, // Allow custom controls
   }).setView([30, 0], 2);
 
-  // Basemap
   createDarkBasemap().addTo(map);
 
-  // Init markers layer
   markersLayer = L.layerGroup().addTo(map);
 
   // Map click handler for stats panel
@@ -46,6 +44,7 @@ function filterData() {
   let filteredPoints = allData.points;
 
   switch (filter) {
+    // TODO: Consistent naming scheme
     case "elevated":
       filteredPoints = allData.points.filter((p) => p[2] >= 250 && p[2] < 300);
       break;
@@ -64,12 +63,12 @@ function filterData() {
   updateStats();
 }
 
-// Load data from backend (when it's ready)
+// Load data from backend (when ready)
 async function loadData() {
   try {
     showLoading(true);
 
-    const response = await fetch("/api/latest-data"); // or '/demo-data' for testing
+    const response = await fetch("/api/latest-data");
     const data = await response.json();
 
     allData = data;
@@ -82,14 +81,14 @@ async function loadData() {
     showLoading(false);
   } catch (error) {
     console.error("Error loading data:", error);
-    // Fallback - maybe replace with placeholder (?)
+    // Fallback - TODO: maybe replace with placeholder (?)
     loadDemoData();
   } finally {
     showLoading(false);
   }
 }
 
-// Demo data for testing (copied from generated heatmap)
+// Demo data for testing (copied from Python generated heatmap)
 function loadDemoData() {
   const demoData = {
     points: [
@@ -129,7 +128,7 @@ function loadDemoData() {
 function updateMap() {
   if (!currentData || !currentData.points.length) return;
 
-  // Remove existing layers
+  // Remove old layers
   if (heatLayer) map.removeLayer(heatLayer);
   markersLayer.clearLayers();
 

@@ -54,7 +54,7 @@ function loadDemoHistoricalData() {
     currentDate.setDate(startDate.getDate() + i);
 
     // Generate demo points for each day with some variation
-    // Data below copied from generated heatmap example
+    // Real data below copied from Python generated heatmap example
     const basePoints = [
       [34.17200469970703, 135.68580627441406, 311.5],
       [35.624549865722656, 136.9666748046875, 311.0],
