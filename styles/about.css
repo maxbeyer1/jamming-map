@@ -155,9 +155,7 @@
   outline: none;
 }
 
-/* Responsive design */
 @media screen and (max-width: 767px) {
-  /* Main layout adjustments */
   .about-main {
     padding: 1rem;
   }
@@ -171,7 +169,7 @@
     font-size: 1rem;
   }
 
-  /* Table of contents - stack vertically on mobile */
+  /* Table of contents stack vertically on mobile */
   .table-of-contents {
     padding: 1rem;
   }
@@ -185,13 +183,13 @@
     display: block;
     text-align: center;
     padding: 0.75rem;
-    min-height: 44px; /* Touch target accessibility */
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
   }
 
-  /* Content cards - single column layout */
+  /* Content cards using single column layout */
   .card-content {
     padding: 1.5rem;
   }
@@ -214,11 +212,10 @@
     height: auto;
   }
 
-  /* Back to top link */
   .back-to-top-link {
     display: block;
     padding: 0.75rem 1.5rem;
-    min-height: 44px; /* Touch target accessibility */
+    min-height: 44px;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -226,7 +223,6 @@
 }
 
 @media screen and (min-width: 768px) and (max-width: 1023px) {
-  /* Tablet layout adjustments */
   .about-main {
     padding: 1.25rem;
   }
@@ -235,14 +231,14 @@
     font-size: 1.75rem;
   }
 
-  /* Table of contents - 2 columns on tablet */
+  /* 2 columns on tablet */
   .toc-list {
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 1rem;
   }
 
-  /* Content cards - adjust image size for tablet */
+  /* Adjust image size for tablet */
   .card-body {
     grid-template-columns: 1fr 250px;
     gap: 1.5rem;
@@ -254,7 +250,6 @@
 }
 
 @media screen and (min-width: 1024px) and (max-width: 1199px) {
-  /* Large tablet/small desktop adjustments */
   .about-main {
     max-width: 100%;
     padding: 0 1.5rem;
@@ -266,7 +261,6 @@
 }
 
 @media screen and (max-width: 479px) {
-  /* Small mobile adjustments */
   .about-main {
     padding: 0.75rem;
   }
@@ -304,34 +298,13 @@
   }
 }
 
-/* High-resolution display support */
-@media screen and (min-resolution: 2dppx) {
-  .content-image {
-    image-rendering: -webkit-optimize-contrast;
-    image-rendering: crisp-edges;
-  }
-}
-
-/* Zoom handling for 50% zoom */
-@media screen and (max-resolution: 1dppx) {
-  .content-image {
-    min-height: 150px;
-  }
-
-  .table-of-contents,
-  .content-card {
-    min-width: 200px;
-  }
-}
-
-/* Very wide screens */
 @media screen and (min-width: 1400px) {
   .about-main {
     max-width: 1400px;
   }
 }
 
-/* Enhanced touch targets for mobile accessibility */
+/* Bigger touch targets for accessibility on mobile */
 @media screen and (max-width: 767px) {
   .toc-link,
   .back-to-top-link {

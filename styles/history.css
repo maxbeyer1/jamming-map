@@ -109,7 +109,7 @@
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
   overflow: hidden;
   position: relative;
-  height: 560px; /* Same as dashboard map - TODO: variable */
+  height: 560px; /* Same as dashboard map - TODO: standardize somewhere? */
 }
 
 .history-main .world-map {
@@ -180,7 +180,7 @@
   border-radius: 3px;
   outline: none;
   -webkit-appearance: none; /* Override default Chrome style */
-  appearance: none; /* Standard property for compatibility */
+  appearance: none; /* Standard prop for compatibility */
 }
 
 .time-slider::-webkit-slider-thumb {
@@ -214,7 +214,7 @@
     padding: 1rem;
   }
 
-  /* Header stacking */
+  /* Stack header */
   .history-header {
     flex-direction: column;
     gap: 1rem;
@@ -230,7 +230,7 @@
     max-width: 150px;
   }
 
-  /* Controls - single column layout */
+  /* Controls use single column layout */
   .history-controls {
     grid-template-columns: 1fr;
     gap: 1rem;
@@ -248,12 +248,10 @@
     font-size: 0.9rem;
   }
 
-  /* Map adjustments */
   .history-main .map-container {
     height: 300px;
   }
 
-  /* Time slider overlay - mobile responsive */
   .time-slider-overlay {
     min-width: 280px;
     left: 10px;
@@ -300,7 +298,7 @@
     padding: 1.25rem;
   }
 
-  /* Controls - two column layout */
+  /* Controls using two column layout */
   .history-controls {
     grid-template-columns: 1fr 1fr;
     gap: 1.25rem;
@@ -311,12 +309,10 @@
     grid-column: 1 / -1;
   }
 
-  /* Map adjustments */
   .history-main .map-container {
     height: 400px;
   }
 
-  /* Time slider overlay - tablet responsive */
   .time-slider-overlay {
     min-width: 350px;
   }
@@ -360,12 +356,11 @@
     font-size: 0.85rem;
   }
 
-  /* Map adjustments */
   .history-main .map-container {
     height: 250px;
   }
 
-  /* Time slider overlay - extra small mobile */
+  /* Time slider overlay extra small on mobile */
   .time-slider-overlay {
     min-width: 260px;
     padding: 8px 12px;
@@ -385,14 +380,13 @@
     font-size: 10px;
   }
 
-  /* Map controls */
   .map-controls .control-btn {
     padding: 0.5rem;
     min-width: 28px;
     font-size: 0.85rem;
   }
 
-  /* Legend adjustments */
+  /* Legend */
   .legend-list {
     gap: 0.375rem;
   }
@@ -402,30 +396,13 @@
   }
 }
 
-@media screen and (min-resolution: 2dppx) {
-  .time-slider-overlay {
-    backdrop-filter: blur(2px);
-  }
-}
-
-/* Optimize for zoomed out views */
-@media screen and (max-resolution: 1dppx) {
-  .history-main .map-container {
-    min-height: 200px;
-  }
-
-  .time-slider-overlay {
-    min-width: 300px;
-  }
-}
-
 @media screen and (min-width: 1400px) {
   .history-main {
     max-width: 1400px;
   }
 }
 
-/* Touch targets for mobile accessibility */
+/* Make touch targets bigger for mobile */
 @media screen and (max-width: 767px) {
   .action-btn,
   .date-input,
