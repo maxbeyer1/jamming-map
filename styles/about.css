@@ -125,6 +125,24 @@
   margin: 0;
 }
 
+.card-text a {
+  color: #4080ff;
+  text-decoration: underline;
+  font-weight: 500;
+  transition: color 0.2s ease;
+}
+
+.card-text a:visited {
+  color: #6699ff;
+}
+
+.card-text a:hover,
+.card-text a:focus {
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(64, 128, 255, 0.5);
+  outline: none;
+}
+
 .card-image {
   display: flex;
   justify-content: center;
