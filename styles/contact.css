@@ -8,19 +8,21 @@
   text-align: center;
   margin-bottom: 2.5rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #ecf0f1;
+  border-bottom: 2px solid #404040;
 }
 
 .contact-header .page-title {
   font-size: 2rem;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 0 0 0.75rem 0;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .page-description {
   font-size: 1.1rem;
-  color: #7f8c8d;
+  color: #b0b0b0;
   margin: 0;
   max-width: 600px;
   margin: 0 auto;
@@ -36,9 +38,9 @@
 }
 
 .contact-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #2a2a2a;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   padding: 1.5rem;
   flex: 1;
   min-width: 300px;
@@ -48,11 +50,13 @@
   align-items: center;
   text-align: center;
   transition: transform 0.2s ease, box-shadow 0.2s ease;
+  border: 1px solid #404040;
 }
 
 .contact-card:hover {
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.8);
+  border-color: #4080ff;
 }
 
 .card-icon {
@@ -74,14 +78,16 @@
 
 .card-title {
   font-size: 1.25rem;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 0 0 0.75rem 0;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .card-description {
   font-size: 0.95rem;
-  color: #7f8c8d;
+  color: #b0b0b0;
   line-height: 1.5;
   margin: 0 0 1.5rem 0;
   text-align: center;
@@ -91,27 +97,31 @@
 .card-button {
   display: inline-block;
   padding: 0.75rem 1.5rem;
-  background-color: #3498db;
-  color: white;
+  background-color: #4080ff;
+  color: #ffffff;
   text-decoration: none;
-  border-radius: 6px;
+  border-radius: 2px;
   font-weight: 600;
   font-size: 0.9rem;
   transition: all 0.2s ease;
   text-align: center;
-  border: none;
+  border: 1px solid #4080ff;
   cursor: pointer;
   min-width: 140px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-family: inherit;
 }
 
 .card-button:hover {
-  background-color: #2980b9;
+  background-color: #2060ff;
   transform: translateY(-1px);
-  box-shadow: 0 2px 8px rgba(52, 152, 219, 0.3);
+  box-shadow: 0 4px 12px rgba(64, 128, 255, 0.5);
+  border-color: #2060ff;
 }
 
 .card-button:focus {
-  outline: 2px solid #3498db;
+  outline: 2px solid #4080ff;
   outline-offset: 2px;
-  background-color: #2980b9;
+  background-color: #2060ff;
 }
