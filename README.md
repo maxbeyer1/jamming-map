@@ -4,8 +4,6 @@ A web application for visualizing and analyzing temperature anomalies from NASA'
 
 NOTE: This is a work in progress and the backend is not yet implemented. The frontend uses demo data for now.
 
-UNIT 4 LAB NOTE: This uses a library called Leaflet.heat to generate the heatmap (https://github.com/Leaflet/Leaflet.heat), which causes a single console WARNING (not error) about a missing argument in the canvas renderer. As I did not write this library it's out of my control and the only solution would be to fork the library or download it locally and fix it myself, missing out on future updates and dependency fixes (or requiring me to maintain them myself which seems out of scope of this project given the warning does not affect functionality).
-
 ## Interactive Features
 
 ### Dashboard Page (`index.html`)
