@@ -8,19 +8,21 @@
 .page-header {
   margin-bottom: 2rem;
   padding-bottom: 1.5rem;
-  border-bottom: 2px solid #ecf0f1;
+  border-bottom: 2px solid #404040;
 }
 
 .page-title {
   font-size: 2rem;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 0 0 1rem 0;
-  font-weight: 600;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 1px;
 }
 
 .page-description {
   font-size: 1.1rem;
-  color: #555;
+  color: #b0b0b0;
   line-height: 1.7;
   max-width: 800px;
   margin: 0;
@@ -28,18 +30,21 @@
 
 /* Table of contents */
 .table-of-contents {
-  background-color: white;
+  background-color: #2a2a2a;
   padding: 1.5rem;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   margin-bottom: 2rem;
+  border: 1px solid #404040;
 }
 
 .toc-title {
   font-size: 1.2rem;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 0 0 1rem 0;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .toc-list {
@@ -52,20 +57,24 @@
 }
 
 .toc-link {
-  color: #3498db;
+  color: #4080ff;
   text-decoration: none;
   padding: 0.5rem 1rem;
-  border: 1px solid #3498db;
-  border-radius: 4px;
+  border: 1px solid #4080ff;
+  border-radius: 2px;
   transition: all 0.2s ease;
   font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-size: 0.9rem;
 }
 
 .toc-link:hover,
 .toc-link:focus {
-  background-color: #3498db;
-  color: white;
+  background-color: #4080ff;
+  color: #ffffff;
   outline: none;
+  box-shadow: 0 0 8px rgba(64, 128, 255, 0.4);
 }
 
 /* Content */
@@ -77,10 +86,11 @@
 }
 
 .content-card {
-  background-color: white;
-  border-radius: 8px;
-  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  background-color: #2a2a2a;
+  border-radius: 2px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.6);
   overflow: hidden;
+  border: 1px solid #404040;
 }
 
 .card-content {
@@ -89,9 +99,11 @@
 
 .card-title {
   font-size: 1.4rem;
-  color: #2c3e50;
+  color: #ffffff;
   margin: 0 0 1.5rem 0;
   font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .card-body {
@@ -108,7 +120,7 @@
 }
 
 .card-text p {
-  color: #555;
+  color: #b0b0b0;
   line-height: 1.7;
   margin: 0;
 }
@@ -135,24 +147,27 @@
 .back-to-top {
   text-align: center;
   padding: 1.5rem 0;
-  border-top: 1px solid #ecf0f1;
+  border-top: 1px solid #404040;
 }
 
 .back-to-top-link {
-  color: #3498db;
+  color: #4080ff;
   text-decoration: none;
   font-weight: 500;
   padding: 0.75rem 1.5rem;
-  border: 1px solid #3498db;
-  border-radius: 4px;
+  border: 1px solid #4080ff;
+  border-radius: 2px;
   transition: all 0.2s ease;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
 }
 
 .back-to-top-link:hover,
 .back-to-top-link:focus {
-  background-color: #3498db;
-  color: white;
+  background-color: #4080ff;
+  color: #ffffff;
   outline: none;
+  box-shadow: 0 0 8px rgba(64, 128, 255, 0.4);
 }
 
 @media screen and (max-width: 767px) {
