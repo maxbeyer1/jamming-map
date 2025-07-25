@@ -450,21 +450,26 @@ body {
 .photos-title {
   font-size: 1rem;
   margin-bottom: 0.75rem;
-  color: #2c3e50;
+  color: #ffffff;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  font-weight: 600;
 }
 
 .photo-placeholder {
   width: 100%;
-  border-radius: 4px;
-  background-color: #ecf0f1;
+  border-radius: 2px;
+  background-color: #404040;
+  border: 1px solid #606060;
 }
 
 /* Footer/bottom status bar */
 .site-footer {
-  background-color: #2c3e50;
-  color: white;
+  background-color: #1a1a1a;
+  color: #e0e0e0;
   padding: 1rem 0;
   margin-top: 2rem;
+  border-top: 1px solid #404040;
 }
 
 .footer-content {
@@ -484,22 +489,26 @@ body {
 }
 
 .external-link {
-  color: #3498db;
+  color: #4080ff;
   text-decoration: none;
+  font-weight: 500;
 }
 
 .external-link:hover,
 .external-link:focus {
   text-decoration: underline;
   outline: none;
+  color: #ffffff;
+  text-shadow: 0 0 4px rgba(64, 128, 255, 0.5);
 }
 
 .footer-separator {
-  color: #7f8c8d;
+  color: #606060;
 }
 
 .disclaimer {
-  color: #cccccc;
+  color: #b0b0b0;
+  font-weight: 400;
 }
 
 *:focus {
