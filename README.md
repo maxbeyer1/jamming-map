@@ -1,4 +1,4 @@
-# SMAP Signal Jamming Monitor
+# RadioWatch - An OSINT SMAP-based Geopolitical Monitor
 
 A web application for visualizing and analyzing temperature anomalies from NASA's SMAP satellite data as potential geopolitical activity/evidence of signal jamming. Uses the fact that SMAP records the 1.4 GHz spectrum (used for GPS, drone signals, etc. and not much for anything civilian related), so anyone broadcasting extremely high temperatures is probably trying to jam signals.
 
