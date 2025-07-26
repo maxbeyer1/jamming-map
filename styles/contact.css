@@ -128,3 +128,20 @@
   outline-offset: 2px;
   background-color: #2060ff;
 }
+
+.card-button.disabled {
+  background-color: #404040;
+  color: #888888;
+  border-color: #404040;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+
+.card-button.disabled:hover {
+  background-color: #404040;
+  color: #888888;
+  border-color: #404040;
+  transform: none;
+  box-shadow: none;
+}
