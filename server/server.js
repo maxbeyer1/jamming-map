@@ -17,6 +17,8 @@ app.get("/health", (req, res) => {
 // Current heatmap data endpoint
 app.get("/api/latest-data", async (req, res) => {
   try {
+    const pythonPath = path.join(__dirname, "scripts", "venv", "bin", "python");
+
     const pythonScriptPath = path.join(__dirname, "scripts", "smap_mapper.py");
 
     // TODO: Remove when script is modified to download data itself
@@ -29,10 +31,10 @@ app.get("/api/latest-data", async (req, res) => {
 
     console.log(`Processing SMAP data with threshold: ${threshold}K`);
 
-    const python = spawn("python3", [
+    const python = spawn(pythonPath, [
       pythonScriptPath,
       dataPath, // TODO: Remove when script downloads data itself
-      "--json",
+      // "--json",
       "--threshold",
       threshold,
     ]);
