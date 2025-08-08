@@ -3,6 +3,7 @@ import argparse
 import json
 import numpy as np
 import h5py
+from datetime import datetime
 
 
 def extract_extreme_tb(h5_file, threshold=310):
@@ -44,6 +45,20 @@ def process_files(paths, threshold=310):
     return all_points
 
 
+def generate_output_filename():
+    """Generate timestamp-based filename for processed data"""
+    timestamp = datetime.now().strftime("%Y%m%d_%H%M%S")
+    return f"processed_{timestamp}.json"
+
+
+def ensure_output_directory():
+    """Create ../cache/processed/ directory relative to script location"""
+    script_dir = os.path.dirname(os.path.abspath(__file__))
+    output_dir = os.path.join(script_dir, "..", "cache", "processed")
+    os.makedirs(output_dir, exist_ok=True)
+    return output_dir
+
+
 def main():
     parser = argparse.ArgumentParser(
         description="Generate JSON data for heatmaps of extreme SMAP brightness temperatures.")
@@ -66,7 +81,12 @@ def main():
 
     points = process_files(files, args.threshold)
 
-    # Output JSON data for Node
+    # Prepare output directory and filename
+    output_dir = ensure_output_directory()
+    filename = generate_output_filename()
+    output_path = os.path.join(output_dir, filename)
+
+    # Prepare JSON data for Node
     if points:
         temps = [p[2] for p in points]
         output_data = {
@@ -79,7 +99,6 @@ def main():
                 "threshold_used": args.threshold
             }
         }
-        print(json.dumps(output_data))
     else:
         # Output empty data structure
         output_data = {
@@ -92,7 +111,12 @@ def main():
                 "threshold_used": args.threshold
             }
         }
-        print(json.dumps(output_data))
+
+    # Save JSON data to file
+    with open(output_path, 'w') as f:
+        json.dump(output_data, f, indent=2)
+    
+    print(f"Processed data saved to: {output_path}")
 
 
 if __name__ == "__main__":
