@@ -6,6 +6,8 @@ import h5py
 from datetime import datetime
 
 
+# Below function and calculations based on work from:
+# https://radioandnukes.substack.com/p/how-dare-you-transmit-at-14-ghz
 def extract_extreme_tb(h5_file, threshold=310):
     points = []
     try:
@@ -115,7 +117,7 @@ def main():
     # Save JSON data to file
     with open(output_path, 'w') as f:
         json.dump(output_data, f, indent=2)
-    
+
     print(f"Processed data saved to: {output_path}")
 
 
