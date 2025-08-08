@@ -88,40 +88,28 @@ async function loadData() {
   }
 }
 
-// Demo data for testing (copied from Python generated heatmap)
-function loadDemoData() {
-  const demoData = {
-    points: [
-      [34.17200469970703, 135.68580627441406, 311.50823974609375],
-      [35.624549865722656, 136.9666748046875, 311.0556640625],
-      [57.76116943359375, 61.802486419677734, 311.2349548339844],
-      [57.648983001708984, 61.16133499145508, 325.14447021484375],
-      [57.596229553222656, 61.359161376953125, 331.547607421875],
-      [57.54594039916992, 61.558876037597656, 323.21881103515625],
-      [39.97489929199219, 32.60314178466797, 310.7469787597656],
-      [45.347408294677734, 38.739070892333984, 336.670166015625],
-      [48.67844009399414, 35.49364471435547, 356.0020751953125],
-      [29.96904945373535, 31.593303680419922, 318.28338623046875],
-      [21.792835235595703, 101.70906829833984, 329.58990478515625],
-      [22.633861541748047, 97.03102111816406, 355.1119384765625],
-    ],
-    stats: {
-      total_points: 12,
-      max_tb: 356.0,
-      min_tb: 310.7,
-      avg_tb: 328.4,
-      threshold_used: 310,
-    },
-  };
+// Demo data for testing - now loaded from backend
+async function loadDemoData() {
+  try {
+    showLoading(true);
 
-  allData = demoData;
-  currentData = demoData;
+    const response = await fetch(`${BACKEND_URL}/api/demo-data`);
+    const data = await response.json();
 
-  updateMap();
-  updateStats();
-  updateTimestamp();
+    console.log("Loaded demo data:", data);
 
-  showLoading(false);
+    allData = data;
+    currentData = data;
+
+    updateMap();
+    updateStats();
+    updateTimestamp();
+
+    showLoading(false);
+  } catch (error) {
+    console.error("Error loading demo data:", error);
+    showLoading(false);
+  }
 }
 
 // Update map with current data
