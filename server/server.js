@@ -2,6 +2,9 @@ const express = require("express");
 const cors = require("cors");
 const { spawn } = require("child_process");
 const path = require("path");
+const fs = require("fs");
+
+const SMAPScheduler = require("./services/scheduler");
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -9,83 +12,138 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Init scheduler
+const scheduler = new SMAPScheduler();
+
 app.get("/health", (req, res) => {
   res.json({ status: "OK", message: "RadioWatch API is running" });
 });
 
+function getLatestProcessedFile() {
+  const processedDir = path.join(__dirname, "cache", "processed");
+
+  if (!fs.existsSync(processedDir)) {
+    return null;
+  }
+
+  const files = fs
+    .readdirSync(processedDir)
+    .filter((file) => file.startsWith("processed_") && file.endsWith(".json"))
+    .map((file) => ({
+      name: file,
+      path: path.join(processedDir, file),
+      // Extract timestamp from filename for sorting
+      timestamp: file.match(/processed_(\d{8}_\d{6})\.json/)?.[1] || "0",
+    }))
+    .sort((a, b) => b.timestamp.localeCompare(a.timestamp)); // Sort descending (newest first)
+
+  return files.length > 0 ? files[0] : null;
+}
+
 // Current heatmap data endpoint
 app.get("/api/latest-data", async (req, res) => {
   try {
-    const pythonPath = path.join(__dirname, "scripts", "venv", "bin", "python");
+    const latestFile = getLatestProcessedFile();
 
-    const pythonScriptPath = path.join(__dirname, "scripts", "smap_mapper.py");
-
-    // TODO: Remove when script is modified to download data itself
-    const dataPath =
-      process.env.SMAP_DATA_PATH ||
-      "/Users/maxbeyer/Desktop/projects/playground/SMAP-RFI-Mapper/h5_input_files";
-
-    // Get threshold from query params or use default
-    const threshold = req.query.threshold || "310";
-
-    console.log(`Processing SMAP data with threshold: ${threshold}K`);
-
-    const python = spawn(pythonPath, [
-      pythonScriptPath,
-      dataPath, // TODO: Remove when script downloads data itself
-      "--threshold",
-      threshold,
-    ]);
-
-    let jsonOutput = "";
-    let errorOutput = "";
-
-    // Collect output from script
-    python.stdout.on("data", (data) => {
-      jsonOutput += data.toString();
-    });
-
-    // Collect error output
-    python.stderr.on("data", (data) => {
-      errorOutput += data.toString();
-    });
-
-    // When script finishes
-    python.on("close", (code) => {
-      // If exited with error return it
-      if (code !== 0) {
-        console.error("Python script error:", errorOutput);
-        return res.status(500).json({
-          error: "Failed to process SMAP data",
-          details: errorOutput,
-        });
-      }
-
-      // Otherwise parse JSON and return that (or error if fails)
-      try {
-        const parsedData = JSON.parse(jsonOutput);
-        console.log(`Found ${parsedData.points?.length || 0} data points`);
-        res.json(parsedData);
-      } catch (parseError) {
-        console.error("JSON parse error:", parseError);
-        res.status(500).json({
-          error: "Failed to parse Python script output",
-          raw_output: jsonOutput,
-        });
-      }
-    });
-
-    python.on("error", (error) => {
-      console.error("Failed to start Python script:", error);
-      res.status(500).json({
-        error: "Failed to start Python script",
-        details: error.message,
+    if (!latestFile) {
+      return res.status(404).json({
+        error: "No processed data available",
+        message: "Use /api/update",
       });
+    }
+
+    // Check if file exists and read it
+    if (!fs.existsSync(latestFile.path)) {
+      return res.status(404).json({
+        error: "Latest data file not found",
+        filename: latestFile.name,
+      });
+    }
+
+    const data = JSON.parse(fs.readFileSync(latestFile.path, "utf8"));
+
+    // Add metadata about the file
+    const stats = fs.statSync(latestFile.path);
+    data.metadata = {
+      filename: latestFile.name,
+      fileTimestamp: latestFile.timestamp,
+      lastModified: stats.mtime,
+      dataAge: Date.now() - stats.mtime.getTime(),
+    };
+
+    console.log(
+      `Served data from ${latestFile.name} (${data.points?.length || 0} points)`
+    );
+    res.json(data);
+  } catch (error) {
+    console.error("Error serving latest data:", error);
+    res.status(500).json({
+      error: "Failed to load processed data",
+      details: error.message,
+    });
+  }
+});
+
+app.post("/api/update", async (req, res) => {
+  try {
+    console.log("Manual update requested");
+
+    // Don't await - let it run in background and return immediately
+    scheduler.triggerUpdate().catch((err) => {
+      console.error("Manual update failed:", err.message);
+    });
+
+    res.json({
+      status: "success",
+      message: "Update triggered - check logs for progress",
     });
   } catch (error) {
-    console.error("Server error:", error);
+    console.error("Error triggering update:", error);
     res.status(500).json({
-      error: "Internal server error",
+      error: "Failed to trigger update",
+      details: error.message,
+    });
+  }
+});
+
+app.get("/api/status", (req, res) => {
+  try {
+    const latestFile = getLatestProcessedFile();
+    const manifestPath = path.join(__dirname, "cache", "manifest.json");
+
+    let manifestInfo = { files: [], last_updated: null };
+    if (fs.existsSync(manifestPath)) {
+      manifestInfo = JSON.parse(fs.readFileSync(manifestPath, "utf8"));
+    }
+
+    const status = {
+      scheduler_running: true,
+      latest_processed_file: latestFile
+        ? {
+            filename: latestFile.name,
+            timestamp: latestFile.timestamp,
+            age_minutes: latestFile
+              ? Math.round(
+                  (Date.now() - fs.statSync(latestFile.path).mtime.getTime()) /
+                    (1000 * 60)
+                )
+              : null,
+          }
+        : null,
+      raw_files_count: manifestInfo.files.length,
+      last_fetch: manifestInfo.last_updated,
+      cache_directories: {
+        raw_files: fs.existsSync(path.join(__dirname, "cache", "raw_files")),
+        processed: fs.existsSync(path.join(__dirname, "cache", "processed")),
+        manifest: fs.existsSync(manifestPath),
+      },
+    };
+
+    res.json(status);
+  } catch (error) {
+    console.error("Error getting status:", error);
+    res.status(500).json({
+      error: "Failed to get status",
       details: error.message,
     });
   }
@@ -119,6 +177,8 @@ app.get("/api/demo-data", (req, res) => {
 
   res.json(demoData);
 });
+
+scheduler.start();
 
 app.listen(PORT, () => {
   console.log(`RadioWatch server running on port ${PORT}`);
