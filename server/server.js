@@ -9,7 +9,6 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
-// Health check endpoint
 app.get("/health", (req, res) => {
   res.json({ status: "OK", message: "RadioWatch API is running" });
 });
@@ -34,7 +33,6 @@ app.get("/api/latest-data", async (req, res) => {
     const python = spawn(pythonPath, [
       pythonScriptPath,
       dataPath, // TODO: Remove when script downloads data itself
-      // "--json",
       "--threshold",
       threshold,
     ]);
@@ -125,6 +123,6 @@ app.get("/api/demo-data", (req, res) => {
 app.listen(PORT, () => {
   console.log(`RadioWatch server running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
-  console.log(`API endpoint: http://localhost:${PORT}/api/latest-data`);
+  console.log(`Live data endpoint: http://localhost:${PORT}/api/latest-data`);
   console.log(`Demo endpoint: http://localhost:${PORT}/api/demo-data`);
 });
