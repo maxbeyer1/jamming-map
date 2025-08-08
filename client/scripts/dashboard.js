@@ -68,7 +68,7 @@ async function loadData() {
   try {
     showLoading(true);
 
-    const response = await fetch("/api/latest-data");
+    const response = await fetch(`${BACKEND_URL}/api/latest-data`);
     const data = await response.json();
 
     allData = data;
@@ -138,8 +138,8 @@ function updateMap() {
       fillColor: getTemperatureColor(temp),
       color: "#000",
       weight: 1,
-      opacity: 0.8,
-      fillOpacity: 0.8,
+      opacity: 0,
+      fillOpacity: 0,
     });
 
     marker.bindPopup(`
@@ -213,5 +213,5 @@ function onMapClick(e) {
 // Init when page loads
 document.addEventListener("DOMContentLoaded", function () {
   initMap();
-  loadDemoData(); // TODO: Replace with loadData() when backend is finished
+  loadData();
 });
