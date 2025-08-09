@@ -1,0 +1,32 @@
+version: '3.8'
+
+services:
+  radiowatch:
+    build: .
+    ports:
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - PYTHON_PATH=python3
+      # NASA Earthdata credentials - set these in .env file
+      - EARTHDATA_USERNAME=${EARTHDATA_USERNAME}
+      - EARTHDATA_PASSWORD=${EARTHDATA_PASSWORD}
+    volumes:
+      # Persist cache data across container restarts
+      - ./data/cache:/app/cache
+      # Optional: mount logs
+      - ./data/logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  cache_data:
+    driver: local
+  logs_data:
+    driver: local

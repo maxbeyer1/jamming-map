@@ -379,3 +379,4 @@ pyrightconfig.json
 
 # Project specific
 server/cache/
+data/
