@@ -57,7 +57,7 @@ def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--cache-dir", default="./cache/raw_files")
     parser.add_argument("--manifest", default="./cache/manifest.json")
-    parser.add_argument("--days", type=int, default=1)
+    parser.add_argument("--hours", type=int, default=24)
     parser.add_argument("--cleanup", action="store_true")
 
     args = parser.parse_args()
@@ -89,9 +89,9 @@ def main():
 
         auth = earthaccess.login(strategy='environment')
 
-        # last N days
+        # last N hours
         end_date = datetime.utcnow()
-        start_date = end_date - timedelta(days=args.days)
+        start_date = end_date - timedelta(hours=args.hours)
 
         date_range = (
             start_date.strftime('%Y-%m-%d'),
