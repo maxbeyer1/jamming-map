@@ -12,6 +12,9 @@ const PORT = process.env.PORT || 3001;
 app.use(cors());
 app.use(express.json());
 
+// Serve static files from client directory
+app.use(express.static(path.join(__dirname, "../client")));
+
 // Init scheduler
 const scheduler = new SMAPScheduler();
 
@@ -180,7 +183,7 @@ app.get("/api/demo-data", (req, res) => {
 
 scheduler.start();
 
-app.listen(PORT, () => {
+app.listen(PORT, "0.0.0.0", () => {
   console.log(`RadioWatch server running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
   console.log(`Live data endpoint: http://localhost:${PORT}/api/latest-data`);
