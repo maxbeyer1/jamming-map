@@ -183,7 +183,7 @@ app.get("/api/demo-data", (req, res) => {
 
 scheduler.start();
 
-app.listen(PORT, "0.0.0.0", () => {
+app.listen(PORT, () => {
   console.log(`RadioWatch server running on port ${PORT}`);
   console.log(`Health check: http://localhost:${PORT}/health`);
   console.log(`Live data endpoint: http://localhost:${PORT}/api/latest-data`);
