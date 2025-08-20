@@ -4,7 +4,7 @@
 // Key is restricted but still bad practice
 const GOOGLE_MAPS_API_KEY = "AIzaSyAxGvWHl0BZANLg29kWOjVN6OauyfSgg2Q";
 
-const BACKEND_URL = window.location.origin;
+const BACKEND_URL = "/api";
 
 // Get satellite imagery URL w/ Google Maps Static API
 function getSatelliteImageUrl(lat, lon) {

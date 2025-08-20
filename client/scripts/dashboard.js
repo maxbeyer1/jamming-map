@@ -68,7 +68,7 @@ async function loadData() {
   try {
     showLoading(true);
 
-    const response = await fetch(`${BACKEND_URL}/api/latest-data`);
+    const response = await fetch(`${BACKEND_URL}/latest-data`);
     const data = await response.json();
 
     allData = data;
@@ -93,7 +93,7 @@ async function loadDemoData() {
   try {
     showLoading(true);
 
-    const response = await fetch(`${BACKEND_URL}/api/demo-data`);
+    const response = await fetch(`${BACKEND_URL}/demo-data`);
     const data = await response.json();
 
     console.log("Loaded demo data:", data);
