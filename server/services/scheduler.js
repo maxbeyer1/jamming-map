@@ -4,14 +4,7 @@ const cron = require("node-cron");
 
 class SMAPScheduler {
   constructor() {
-    this.pythonPath = path.join(
-      __dirname,
-      "..",
-      "scripts",
-      "venv",
-      "bin",
-      "python"
-    );
+    this.pythonPath = process.env.PYTHON_PATH || "python3";
     this.fetcherScript = path.join(
       __dirname,
       "..",

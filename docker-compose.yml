@@ -1,0 +1,30 @@
+version: "3.8"
+
+services:
+  radiowatch:
+    build: .
+    ports:
+      - "80:3001"
+      - "3001:3001"
+    environment:
+      - NODE_ENV=production
+      - PORT=3001
+      - PYTHON_PATH=python3
+      - EARTHDATA_USERNAME=${EARTHDATA_USERNAME}
+      - EARTHDATA_PASSWORD=${EARTHDATA_PASSWORD}
+    volumes:
+      - ./data/cache:/app/cache
+      - ./data/logs:/app/logs
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3001/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 40s
+
+volumes:
+  cache_data:
+    driver: local
+  logs_data:
+    driver: local
