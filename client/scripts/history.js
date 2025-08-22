@@ -18,7 +18,6 @@ function initMap() {
 }
 
 // Load historical data from backend
-// TODO: Replace with real data this is mostly pseudocode
 async function loadHistoricalData() {
   try {
     showLoading(true);
@@ -26,19 +25,39 @@ async function loadHistoricalData() {
     const dateFrom = document.getElementById("date-from").value;
     const dateTo = document.getElementById("date-to").value;
 
-    // TODO: Replace with real API endpoint
+    if (!dateFrom || !dateTo) {
+      console.error("Date range not specified");
+      showLoading(false);
+      return;
+    }
+
+    console.log(`Loading historical data from ${dateFrom} to ${dateTo}`);
+
     const response = await fetch(
       `/api/historical-data?from=${dateFrom}&to=${dateTo}`
     );
+
+    if (!response.ok) {
+      const errorData = await response.json();
+      throw new Error(`${response.status}: ${errorData.message || 'Failed to load data'}`);
+    }
+
     const data = await response.json();
+    console.log(`Loaded ${data.timePoints?.length || 0} time points`);
 
     historicalData = data;
+    
+    // Reset timeline position to middle
+    currentTimeIndex = Math.floor((data.timePoints?.length || 1) / 2);
+    
     updateTimelineLabels();
     updateMapForCurrentTime();
+    updateTimestamp();
   } catch (error) {
     console.error("Error loading historical data:", error);
-    // Fallback to demo data - again maybe switch to placeholder (what's better UX?)
-    loadDemoHistoricalData();
+    
+    // Show user-friendly error message
+    alert(`Failed to load historical data: ${error.message}\n\nPlease try a different date range or check if data is available for the selected period.`);
   } finally {
     showLoading(false);
   }
@@ -207,8 +226,8 @@ function onTimelineChange() {
 }
 
 function onDateRangeChange() {
-  console.log("Date range changed - TODO: reload data");
-  //   loadHistoricalData();
+  console.log("Date range changed - reloading data");
+  loadHistoricalData();
 }
 
 // Power filter change handler
@@ -258,7 +277,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .querySelector(".settings-btn")
     .addEventListener("click", openSettings);
 
-  // Load demo data
-  // TODO: Replace with loadHistoricalData when backend ready
-  loadDemoHistoricalData();
+  // Load historical data from backend
+  loadHistoricalData();
 });
