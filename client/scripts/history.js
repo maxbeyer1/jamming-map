@@ -247,8 +247,8 @@ function updateMapForCurrentTime() {
       fillColor: getTemperatureColor(temp),
       color: "#000",
       weight: 1,
-      opacity: 0.5,
-      fillOpacity: 0.25,
+      opacity: 0,
+      fillOpacity: 0,
     });
 
     marker.bindPopup(`
@@ -321,8 +321,42 @@ async function refreshData() {
 }
 
 function exportData() {
-  alert("Export functionality will be implemented when backend is ready");
-  // TODO: Implement CSV or other export of filtered data
+  if (!historicalData) {
+    showErrorMessage(
+      "No historical data available to export. Please load data first."
+    );
+    return;
+  }
+
+  try {
+    const dataToExport = {
+      ...historicalData,
+      exportDate: new Date().toISOString(),
+      exportedBy: "RadioWatch Historical Data Export",
+    };
+
+    const jsonString = JSON.stringify(dataToExport, null, 2);
+    const blob = new Blob([jsonString], { type: "application/json" });
+
+    const url = URL.createObjectURL(blob);
+    const link = document.createElement("a");
+    link.href = url;
+
+    const fromDate = historicalData.dateRange?.from || "unknown";
+    const toDate = historicalData.dateRange?.to || "unknown";
+    link.download = `radiowatch-historical-data-${fromDate}-to-${toDate}.json`;
+
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+
+    URL.revokeObjectURL(url);
+
+    console.log("Historical data exported successfully");
+  } catch (error) {
+    console.error("Error exporting data:", error);
+    showErrorMessage("Failed to export data. Please try again.");
+  }
 }
 
 // function openSettings() {
@@ -371,9 +405,9 @@ document.addEventListener("DOMContentLoaded", function () {
     .getElementById("date-to")
     .addEventListener("change", onDateRangeChange);
   document.querySelector(".export-btn").addEventListener("click", exportData);
-  document
-    .querySelector(".settings-btn")
-    .addEventListener("click", openSettings);
+  // document
+  //   .querySelector(".settings-btn")
+  //   .addEventListener("click", openSettings);
 
   // Load historical data from backend with default dates
   loadHistoricalData();
