@@ -1,4 +1,3 @@
-# Single-stage build for RadioWatch application
 FROM python:3.11-slim
 
 # Install Node.js
@@ -12,7 +11,7 @@ RUN apt-get update && apt-get install -y \
 # Create app directory
 WORKDIR /app
 
-# Install Python dependencies first
+# Install Python dependencies
 COPY server/scripts/requirements.txt ./scripts/
 RUN pip install --no-cache-dir -r scripts/requirements.txt
 
