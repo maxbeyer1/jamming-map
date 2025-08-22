@@ -26,7 +26,7 @@ function validateDateInputs() {
   // Check if both dates are present and in YYYY-MM-DD format
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
   if (!dateFrom || !dateTo || !dateRegex.test(dateFrom) || !dateRegex.test(dateTo)) {
-    return { valid: false, error: "Please enter complete dates in both fields" };
+    return { valid: false, error: "Please enter complete dates in both fields", showError: false }; // Don't show while typing
   }
   
   const fromDate = new Date(dateFrom);
@@ -34,12 +34,12 @@ function validateDateInputs() {
   
   // Check if dates are valid
   if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
-    return { valid: false, error: "Please enter valid dates" };
+    return { valid: false, error: "Please enter valid dates", showError: true };
   }
   
   // Check if from date is before to date
   if (fromDate > toDate) {
-    return { valid: false, error: "Start date must be before end date" };
+    return { valid: false, error: "Start date must be before end date", showError: true };
   }
   
   return { valid: true, fromDate: dateFrom, toDate: dateTo };
@@ -47,31 +47,21 @@ function validateDateInputs() {
 
 // Show error message in UI instead of alert
 function showErrorMessage(message) {
-  clearErrorMessage();
-  
-  const errorDiv = document.createElement('div');
-  errorDiv.className = 'error-message';
-  errorDiv.style.cssText = `
-    background: #ff4444;
-    color: white;
-    padding: 10px;
-    margin: 10px 0;
-    border-radius: 4px;
-    font-size: 14px;
-  `;
-  errorDiv.textContent = message;
-  
-  const controls = document.querySelector('.history-controls');
-  controls.insertBefore(errorDiv, controls.firstChild);
-  
-  // Auto-remove after 5 seconds
-  setTimeout(clearErrorMessage, 5000);
+  const errorContainer = document.getElementById('date-error-message');
+  if (errorContainer) {
+    errorContainer.textContent = message;
+    errorContainer.style.display = 'block';
+    
+    // Auto-remove after 5 seconds
+    setTimeout(clearErrorMessage, 5000);
+  }
 }
 
 function clearErrorMessage() {
-  const existing = document.querySelector('.error-message');
-  if (existing) {
-    existing.remove();
+  const errorContainer = document.getElementById('date-error-message');
+  if (errorContainer) {
+    errorContainer.style.display = 'none';
+    errorContainer.textContent = '';
   }
 }
 
@@ -83,7 +73,10 @@ async function loadHistoricalData() {
     const validation = validateDateInputs();
     if (!validation.valid) {
       console.log("Validation failed:", validation.error);
-      return; // Don't show error for incomplete typing
+      if (validation.showError) {
+        showErrorMessage(validation.error);
+      }
+      return;
     }
 
     showLoading(true);
