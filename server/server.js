@@ -360,5 +360,6 @@ scheduler.start();
 
 app.listen(PORT, () => {
   console.log(`RadioWatch server running on port ${PORT}`);
+  console.log(`Version: 1.0.0`);
   console.log(`API live at http://localhost:${PORT}/api`);
 });
