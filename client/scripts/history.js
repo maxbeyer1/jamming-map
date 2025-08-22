@@ -22,46 +22,59 @@ function initMap() {
 function validateDateInputs() {
   const dateFrom = document.getElementById("date-from").value;
   const dateTo = document.getElementById("date-to").value;
-  
+
   // Check if both dates are present and in YYYY-MM-DD format
   const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
-  if (!dateFrom || !dateTo || !dateRegex.test(dateFrom) || !dateRegex.test(dateTo)) {
-    return { valid: false, error: "Please enter complete dates in both fields", showError: false }; // Don't show while typing
+  if (
+    !dateFrom ||
+    !dateTo ||
+    !dateRegex.test(dateFrom) ||
+    !dateRegex.test(dateTo)
+  ) {
+    return {
+      valid: false,
+      error: "Please enter complete dates in both fields",
+      showError: false,
+    }; // Don't show while typing
   }
-  
+
   const fromDate = new Date(dateFrom);
   const toDate = new Date(dateTo);
-  
+
   // Check if dates are valid
   if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
     return { valid: false, error: "Please enter valid dates", showError: true };
   }
-  
+
   // Check if from date is before to date
   if (fromDate > toDate) {
-    return { valid: false, error: "Start date must be before end date", showError: true };
+    return {
+      valid: false,
+      error: "Start date must be before end date",
+      showError: true,
+    };
   }
-  
+
   return { valid: true, fromDate: dateFrom, toDate: dateTo };
 }
 
 // Show error message in UI instead of alert
 function showErrorMessage(message) {
-  const errorContainer = document.getElementById('date-error-message');
+  const errorContainer = document.getElementById("date-error-message");
   if (errorContainer) {
     errorContainer.textContent = message;
-    errorContainer.style.display = 'block';
-    
+    errorContainer.style.display = "block";
+
     // Auto-remove after 5 seconds
     setTimeout(clearErrorMessage, 5000);
   }
 }
 
 function clearErrorMessage() {
-  const errorContainer = document.getElementById('date-error-message');
+  const errorContainer = document.getElementById("date-error-message");
   if (errorContainer) {
-    errorContainer.style.display = 'none';
-    errorContainer.textContent = '';
+    errorContainer.style.display = "none";
+    errorContainer.textContent = "";
   }
 }
 
@@ -69,7 +82,7 @@ function clearErrorMessage() {
 async function loadHistoricalData() {
   try {
     clearErrorMessage();
-    
+
     const validation = validateDateInputs();
     if (!validation.valid) {
       console.log("Validation failed:", validation.error);
@@ -80,7 +93,9 @@ async function loadHistoricalData() {
     }
 
     showLoading(true);
-    console.log(`Loading historical data from ${validation.fromDate} to ${validation.toDate}`);
+    console.log(
+      `Loading historical data from ${validation.fromDate} to ${validation.toDate}`
+    );
 
     const response = await fetch(
       `/api/historical-data?from=${validation.fromDate}&to=${validation.toDate}`
@@ -88,17 +103,17 @@ async function loadHistoricalData() {
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(errorData.message || 'Failed to load data');
+      throw new Error(errorData.message || "Failed to load data");
     }
 
     const data = await response.json();
     console.log(`Loaded ${data.timePoints?.length || 0} time points`);
 
     historicalData = data;
-    
+
     // Reset timeline position to middle
     currentTimeIndex = Math.floor((data.timePoints?.length || 1) / 2);
-    
+
     updateTimelineLabels();
     updateMapForCurrentTime();
     updateTimestamp();
@@ -275,12 +290,12 @@ function onTimelineChange() {
 // Debounced date range change handler
 function onDateRangeChange() {
   console.log("Date range changed");
-  
+
   // Clear any existing timeout
   if (loadDataTimeout) {
     clearTimeout(loadDataTimeout);
   }
-  
+
   // Set new timeout to load data after user stops typing (500ms delay)
   loadDataTimeout = setTimeout(() => {
     loadHistoricalData();
@@ -310,29 +325,29 @@ function exportData() {
   // TODO: Implement CSV or other export of filtered data
 }
 
-function openSettings() {
-  alert("Settings panel will be implemented in future version");
-  // TODO: Is this needed? Might remove
-}
+// function openSettings() {
+//   alert("Settings panel will be implemented in future version");
+//   // TODO: Is this needed? Might remove
+// }
 
 // Set smart default dates based on current date
 function setDefaultDates() {
   const today = new Date();
   const thirtyDaysAgo = new Date(today);
   thirtyDaysAgo.setDate(today.getDate() - 30);
-  
+
   // Format as YYYY-MM-DD
-  const todayStr = today.toISOString().split('T')[0];
-  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
-  
+  const todayStr = today.toISOString().split("T")[0];
+  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split("T")[0];
+
   // Only set defaults if inputs are empty
   const dateFromInput = document.getElementById("date-from");
   const dateToInput = document.getElementById("date-to");
-  
+
   if (!dateFromInput.value) {
     dateFromInput.value = thirtyDaysAgoStr;
   }
-  
+
   if (!dateToInput.value) {
     dateToInput.value = todayStr;
   }
@@ -341,7 +356,7 @@ function setDefaultDates() {
 // Init everything on load
 document.addEventListener("DOMContentLoaded", function () {
   initMap();
-  
+
   // Set default dates
   setDefaultDates();
 
