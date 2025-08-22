@@ -19,7 +19,9 @@ app.use(express.static(path.join(__dirname, "public")));
 const scheduler = new SMAPScheduler();
 
 app.get("/health", (req, res) => {
-  res.json({ status: "OK", message: "RadioWatch API is running" });
+  res.status(200).send({
+    success: true,
+  });
 });
 
 function getLatestProcessedFile() {
