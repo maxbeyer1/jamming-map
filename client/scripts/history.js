@@ -3,6 +3,7 @@ let heatLayer;
 let markersLayer;
 let historicalData = null;
 let currentTimeIndex = 15; // Middle of timeline
+let loadDataTimeout = null; // For debouncing date changes
 
 function initMap() {
   map = L.map("map", {
@@ -17,29 +18,84 @@ function initMap() {
   window.map = map;
 }
 
+// Validate that date inputs are complete and valid
+function validateDateInputs() {
+  const dateFrom = document.getElementById("date-from").value;
+  const dateTo = document.getElementById("date-to").value;
+  
+  // Check if both dates are present and in YYYY-MM-DD format
+  const dateRegex = /^\d{4}-\d{2}-\d{2}$/;
+  if (!dateFrom || !dateTo || !dateRegex.test(dateFrom) || !dateRegex.test(dateTo)) {
+    return { valid: false, error: "Please enter complete dates in both fields" };
+  }
+  
+  const fromDate = new Date(dateFrom);
+  const toDate = new Date(dateTo);
+  
+  // Check if dates are valid
+  if (isNaN(fromDate.getTime()) || isNaN(toDate.getTime())) {
+    return { valid: false, error: "Please enter valid dates" };
+  }
+  
+  // Check if from date is before to date
+  if (fromDate > toDate) {
+    return { valid: false, error: "Start date must be before end date" };
+  }
+  
+  return { valid: true, fromDate: dateFrom, toDate: dateTo };
+}
+
+// Show error message in UI instead of alert
+function showErrorMessage(message) {
+  clearErrorMessage();
+  
+  const errorDiv = document.createElement('div');
+  errorDiv.className = 'error-message';
+  errorDiv.style.cssText = `
+    background: #ff4444;
+    color: white;
+    padding: 10px;
+    margin: 10px 0;
+    border-radius: 4px;
+    font-size: 14px;
+  `;
+  errorDiv.textContent = message;
+  
+  const controls = document.querySelector('.history-controls');
+  controls.insertBefore(errorDiv, controls.firstChild);
+  
+  // Auto-remove after 5 seconds
+  setTimeout(clearErrorMessage, 5000);
+}
+
+function clearErrorMessage() {
+  const existing = document.querySelector('.error-message');
+  if (existing) {
+    existing.remove();
+  }
+}
+
 // Load historical data from backend
 async function loadHistoricalData() {
   try {
-    showLoading(true);
-
-    const dateFrom = document.getElementById("date-from").value;
-    const dateTo = document.getElementById("date-to").value;
-
-    if (!dateFrom || !dateTo) {
-      console.error("Date range not specified");
-      showLoading(false);
-      return;
+    clearErrorMessage();
+    
+    const validation = validateDateInputs();
+    if (!validation.valid) {
+      console.log("Validation failed:", validation.error);
+      return; // Don't show error for incomplete typing
     }
 
-    console.log(`Loading historical data from ${dateFrom} to ${dateTo}`);
+    showLoading(true);
+    console.log(`Loading historical data from ${validation.fromDate} to ${validation.toDate}`);
 
     const response = await fetch(
-      `/api/historical-data?from=${dateFrom}&to=${dateTo}`
+      `/api/historical-data?from=${validation.fromDate}&to=${validation.toDate}`
     );
 
     if (!response.ok) {
       const errorData = await response.json();
-      throw new Error(`${response.status}: ${errorData.message || 'Failed to load data'}`);
+      throw new Error(errorData.message || 'Failed to load data');
     }
 
     const data = await response.json();
@@ -55,9 +111,7 @@ async function loadHistoricalData() {
     updateTimestamp();
   } catch (error) {
     console.error("Error loading historical data:", error);
-    
-    // Show user-friendly error message
-    alert(`Failed to load historical data: ${error.message}\n\nPlease try a different date range or check if data is available for the selected period.`);
+    showErrorMessage(`Failed to load historical data: ${error.message}`);
   } finally {
     showLoading(false);
   }
@@ -225,9 +279,19 @@ function onTimelineChange() {
   updateMapForCurrentTime();
 }
 
+// Debounced date range change handler
 function onDateRangeChange() {
-  console.log("Date range changed - reloading data");
-  loadHistoricalData();
+  console.log("Date range changed");
+  
+  // Clear any existing timeout
+  if (loadDataTimeout) {
+    clearTimeout(loadDataTimeout);
+  }
+  
+  // Set new timeout to load data after user stops typing (500ms delay)
+  loadDataTimeout = setTimeout(() => {
+    loadHistoricalData();
+  }, 500);
 }
 
 // Power filter change handler
@@ -258,9 +322,35 @@ function openSettings() {
   // TODO: Is this needed? Might remove
 }
 
+// Set smart default dates based on current date
+function setDefaultDates() {
+  const today = new Date();
+  const thirtyDaysAgo = new Date(today);
+  thirtyDaysAgo.setDate(today.getDate() - 30);
+  
+  // Format as YYYY-MM-DD
+  const todayStr = today.toISOString().split('T')[0];
+  const thirtyDaysAgoStr = thirtyDaysAgo.toISOString().split('T')[0];
+  
+  // Only set defaults if inputs are empty
+  const dateFromInput = document.getElementById("date-from");
+  const dateToInput = document.getElementById("date-to");
+  
+  if (!dateFromInput.value) {
+    dateFromInput.value = thirtyDaysAgoStr;
+  }
+  
+  if (!dateToInput.value) {
+    dateToInput.value = todayStr;
+  }
+}
+
 // Init everything on load
 document.addEventListener("DOMContentLoaded", function () {
   initMap();
+  
+  // Set default dates
+  setDefaultDates();
 
   // Event listeners
   document
@@ -277,6 +367,6 @@ document.addEventListener("DOMContentLoaded", function () {
     .querySelector(".settings-btn")
     .addEventListener("click", openSettings);
 
-  // Load historical data from backend
+  // Load historical data from backend with default dates
   loadHistoricalData();
 });
