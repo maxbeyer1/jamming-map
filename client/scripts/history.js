@@ -196,6 +196,7 @@ function updateTimelineLabels() {
   // const currentTime = document.querySelector(".current-time");
 
   slider.max = historicalData.timePoints.length - 1;
+  slider.value = currentTimeIndex;
 
   timeStart.textContent = historicalData.timePoints[0].displayDate;
   timeEnd.textContent =
