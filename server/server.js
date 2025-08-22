@@ -47,37 +47,37 @@ function getLatestProcessedFile() {
 function parseDateFromFilename(filename) {
   const match = filename.match(/processed_(\d{8})_\d{6}\.json/);
   if (!match) return null;
-  
+
   const dateStr = match[1]; // YYYYMMDD
   const year = parseInt(dateStr.substr(0, 4));
   const month = parseInt(dateStr.substr(4, 2)) - 1; // JS months are 0-indexed
   const day = parseInt(dateStr.substr(6, 2));
-  
+
   return new Date(year, month, day);
 }
 
 // Helper function to get all processed files within a date range
 function getProcessedFilesInRange(fromDate, toDate) {
   const processedDir = path.join(__dirname, "cache", "processed");
-  
+
   if (!fs.existsSync(processedDir)) {
     return [];
   }
-  
+
   const from = new Date(fromDate);
   const to = new Date(toDate);
-  
+
   // Set time to start/end of day for proper comparison
   from.setHours(0, 0, 0, 0);
   to.setHours(23, 59, 59, 999);
-  
+
   const files = fs
     .readdirSync(processedDir)
     .filter((file) => file.startsWith("processed_") && file.endsWith(".json"))
     .map((file) => {
       const fileDate = parseDateFromFilename(file);
       if (!fileDate) return null;
-      
+
       return {
         name: file,
         path: path.join(processedDir, file),
@@ -86,22 +86,22 @@ function getProcessedFilesInRange(fromDate, toDate) {
       };
     })
     .filter((file) => file && file.date >= from && file.date <= to);
-    
+
   return files;
 }
 
 // Helper function to group files by date and select latest per day
 function groupFilesByDate(files) {
   const grouped = {};
-  
+
   files.forEach((file) => {
-    const dateKey = file.date.toISOString().split('T')[0]; // YYYY-MM-DD
-    
+    const dateKey = file.date.toISOString().split("T")[0]; // YYYY-MM-DD
+
     if (!grouped[dateKey] || file.timestamp > grouped[dateKey].timestamp) {
       grouped[dateKey] = file;
     }
   });
-  
+
   return Object.values(grouped).sort((a, b) => a.date - b.date);
 }
 
@@ -214,6 +214,43 @@ app.get("/api/status", (req, res) => {
   }
 });
 
+// Satellite image URL endpoint
+app.get("/api/satellite-image-url", (req, res) => {
+  try {
+    const { lat, lon } = req.query;
+
+    if (!lat || !lon) {
+      return res.status(400).json({
+        error: "Missing required parameters",
+        message: "Both 'lat' and 'lon' parameters are required",
+      });
+    }
+
+    const GOOGLE_MAPS_API_KEY = process.env.GOOGLE_MAPS_API_KEY;
+
+    // Return placeholder if no API key configured
+    if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
+      return res.json({
+        url: "https://placehold.co/200x150?text=Configure+API+Key",
+        placeholder: true,
+      });
+    }
+
+    const url = `https://maps.googleapis.com/maps/api/staticmap?center=${lat},${lon}&zoom=15&size=200x150&maptype=satellite&key=${GOOGLE_MAPS_API_KEY}`;
+
+    res.json({
+      url: url,
+      placeholder: false,
+    });
+  } catch (error) {
+    console.error("Error generating satellite image URL:", error);
+    res.status(500).json({
+      error: "Failed to generate satellite image URL",
+      details: error.message,
+    });
+  }
+});
+
 // Demo data endpoint (for testing without Python script)
 app.get("/api/demo-data", (req, res) => {
   const demoData = {
@@ -247,69 +284,74 @@ app.get("/api/demo-data", (req, res) => {
 app.get("/api/historical-data", async (req, res) => {
   try {
     const { from, to } = req.query;
-    
+
     if (!from || !to) {
       return res.status(400).json({
         error: "Missing required parameters",
-        message: "Both 'from' and 'to' date parameters are required (YYYY-MM-DD format)"
+        message:
+          "Both 'from' and 'to' date parameters are required (YYYY-MM-DD format)",
       });
     }
-    
+
     // Get all files in the date range
     const filesInRange = getProcessedFilesInRange(from, to);
-    
+
     if (filesInRange.length === 0) {
       return res.status(404).json({
         error: "No data available",
         message: `No processed data found for date range ${from} to ${to}`,
-        dateRange: { from, to }
+        dateRange: { from, to },
       });
     }
-    
+
     // Group by date and select latest per day
     const latestFilesByDate = groupFilesByDate(filesInRange);
-    
+
     // Build response data
     const timePoints = [];
-    
+
     for (const fileInfo of latestFilesByDate) {
       try {
         const fileData = JSON.parse(fs.readFileSync(fileInfo.path, "utf8"));
-        
+
         timePoints.push({
-          date: fileInfo.date.toISOString().split('T')[0], // YYYY-MM-DD
+          date: fileInfo.date.toISOString().split("T")[0], // YYYY-MM-DD
           displayDate: fileInfo.date.toLocaleDateString("en-US", {
             month: "short",
-            day: "numeric"
+            day: "numeric",
           }),
           points: fileData.points || [],
-          stats: fileData.stats || {}
+          stats: fileData.stats || {},
         });
       } catch (error) {
-        console.warn(`Failed to read processed file ${fileInfo.name}:`, error.message);
+        console.warn(
+          `Failed to read processed file ${fileInfo.name}:`,
+          error.message
+        );
         // Skip this file and continue with others
       }
     }
-    
+
     if (timePoints.length === 0) {
       return res.status(500).json({
         error: "Failed to load data",
-        message: "Found files but couldn't read any data from them"
+        message: "Found files but couldn't read any data from them",
       });
     }
-    
-    console.log(`Served historical data: ${timePoints.length} time points from ${from} to ${to}`);
-    
+
+    console.log(
+      `Served historical data: ${timePoints.length} time points from ${from} to ${to}`
+    );
+
     res.json({
       timePoints: timePoints,
-      dateRange: { from, to }
+      dateRange: { from, to },
     });
-    
   } catch (error) {
     console.error("Error serving historical data:", error);
     res.status(500).json({
       error: "Failed to load historical data",
-      details: error.message
+      details: error.message,
     });
   }
 });
@@ -318,8 +360,5 @@ scheduler.start();
 
 app.listen(PORT, () => {
   console.log(`RadioWatch server running on port ${PORT}`);
-  console.log(`Health check: http://localhost:${PORT}/health`);
-  console.log(`Live data endpoint: http://localhost:${PORT}/api/latest-data`);
-  console.log(`Historical data endpoint: http://localhost:${PORT}/api/historical-data`);
-  console.log(`Demo endpoint: http://localhost:${PORT}/api/demo-data`);
+  console.log(`API live at http://localhost:${PORT}/api`);
 });

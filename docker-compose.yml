@@ -10,6 +10,7 @@ services:
       - PYTHON_PATH=python3
       - EARTHDATA_USERNAME=${EARTHDATA_USERNAME}
       - EARTHDATA_PASSWORD=${EARTHDATA_PASSWORD}
+      - GOOGLE_MAPS_API_KEY=${GOOGLE_MAPS_API_KEY}
     volumes:
       - ./data/cache:/app/cache
       - ./data/logs:/app/logs
