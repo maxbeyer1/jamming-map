@@ -176,9 +176,9 @@ function updateStats() {
 }
 
 // Update the location photo
-function updateLocationPhoto(lat, lon) {
+async function updateLocationPhoto(lat, lon) {
   const photoElement = document.querySelector(".photo-placeholder");
-  const imageUrl = getSatelliteImageUrl(lat, lon);
+  const imageUrl = await getSatelliteImageUrl(lat, lon);
 
   photoElement.src = imageUrl;
   photoElement.alt = `Satellite view of ${lat.toFixed(4)}°, ${lon.toFixed(4)}°`;

@@ -1,27 +1,23 @@
 // Common variables
 
-// TODO: REMOVE THIS AND MOVE TO BACKEND
-// Key is restricted but still bad practice
-const GOOGLE_MAPS_API_KEY = "AIzaSyAxGvWHl0BZANLg29kWOjVN6OauyfSgg2Q";
 
 const BACKEND_URL = "/api";
 
-// Get satellite imagery URL w/ Google Maps Static API
-function getSatelliteImageUrl(lat, lon) {
-  // Return placeholder if no API key configured
-  // TODO: Remove once backend is set up
-  if (!GOOGLE_MAPS_API_KEY || GOOGLE_MAPS_API_KEY === "YOUR_API_KEY_HERE") {
-    return "https://placehold.co/200x150?text=Configure+API+Key";
+// Get satellite imagery URL via backend API
+async function getSatelliteImageUrl(lat, lon) {
+  try {
+    const response = await fetch(`${BACKEND_URL}/satellite-image-url?lat=${lat}&lon=${lon}`);
+    const data = await response.json();
+    
+    if (!response.ok) {
+      throw new Error(data.message || 'Failed to get satellite image URL');
+    }
+    
+    return data.url;
+  } catch (error) {
+    console.error("Failed to fetch satellite image URL:", error);
+    return "https://placehold.co/200x150?text=Error+Loading+Image";
   }
-
-  return (
-    `https://maps.googleapis.com/maps/api/staticmap?` +
-    `center=${lat},${lon}&` +
-    `zoom=15&` +
-    `size=200x150&` +
-    `maptype=satellite&` +
-    `key=${GOOGLE_MAPS_API_KEY}`
-  );
 }
 
 // Convert temp num to text
