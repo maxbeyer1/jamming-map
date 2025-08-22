@@ -58,21 +58,36 @@ function showLoading(show) {
   }
 }
 
-function updateTimestamp() {
-  // TODO: Replace with actual last updated instead of current time
-  const now = new Date();
-  const timeString =
-    now.toLocaleDateString("en-US", {
-      year: "numeric",
-      month: "long",
-      day: "2-digit",
-    }) +
-    " " +
-    now.toLocaleTimeString("en-US");
+async function updateTimestamp() {
+  try {
+    const response = await fetch(`${BACKEND_URL}/status`);
+    const data = await response.json();
+    
+    let timeString;
+    if (data.last_fetch) {
+      const lastFetch = new Date(data.last_fetch);
+      timeString =
+        lastFetch.toLocaleDateString("en-US", {
+          year: "numeric",
+          month: "long",
+          day: "2-digit",
+        }) +
+        " " +
+        lastFetch.toLocaleTimeString("en-US");
+    } else {
+      timeString = "No data available";
+    }
 
-  const updateEl = document.getElementById("last-update");
-  if (updateEl) {
-    updateEl.textContent = `Last Update: ${timeString}`;
+    const updateEl = document.getElementById("last-update");
+    if (updateEl) {
+      updateEl.textContent = `Last Update: ${timeString}`;
+    }
+  } catch (error) {
+    console.error("Failed to fetch status:", error);
+    const updateEl = document.getElementById("last-update");
+    if (updateEl) {
+      updateEl.textContent = "Last Update: Unable to fetch";
+    }
   }
 }
 
