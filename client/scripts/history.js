@@ -360,11 +360,6 @@ function exportData() {
   }
 }
 
-// function openSettings() {
-//   alert("Settings panel will be implemented in future version");
-//   // TODO: Is this needed? Might remove
-// }
-
 // Set smart default dates based on current date
 function setDefaultDates() {
   const today = new Date();
