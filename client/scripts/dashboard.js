@@ -81,7 +81,7 @@ async function loadData() {
     showLoading(false);
   } catch (error) {
     console.error("Error loading data:", error);
-    // Fallback - TODO: maybe replace with placeholder (?)
+    // Fallback - maybe replace with placeholder (?)
     loadDemoData();
   } finally {
     showLoading(false);

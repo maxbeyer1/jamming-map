@@ -1,9 +1,9 @@
 import os
 import argparse
 import json
+from datetime import datetime
 import numpy as np
 import h5py
-from datetime import datetime
 
 
 # Below function and calculations based on work from:

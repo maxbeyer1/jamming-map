@@ -1,18 +1,18 @@
 // Common variables
-
-
 const BACKEND_URL = "/api";
 
 // Get satellite imagery URL via backend API
 async function getSatelliteImageUrl(lat, lon) {
   try {
-    const response = await fetch(`${BACKEND_URL}/satellite-image-url?lat=${lat}&lon=${lon}`);
+    const response = await fetch(
+      `${BACKEND_URL}/satellite-image-url?lat=${lat}&lon=${lon}`
+    );
     const data = await response.json();
-    
+
     if (!response.ok) {
-      throw new Error(data.message || 'Failed to get satellite image URL');
+      throw new Error(data.message || "Failed to get satellite image URL");
     }
-    
+
     return data.url;
   } catch (error) {
     console.error("Failed to fetch satellite image URL:", error);
@@ -58,7 +58,7 @@ async function updateTimestamp() {
   try {
     const response = await fetch(`${BACKEND_URL}/status`);
     const data = await response.json();
-    
+
     let timeString;
     if (data.last_fetch) {
       const lastFetch = new Date(data.last_fetch);
@@ -96,7 +96,7 @@ const HEATMAP_GRADIENT = {
   1.0: "#ff0000", // Red for highest temps
 };
 
-// Initialize base map (TODO: Add light mode?)
+// Initialize base map
 function createDarkBasemap() {
   return L.tileLayer(
     "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png",
