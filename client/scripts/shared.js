@@ -22,17 +22,17 @@ async function getSatelliteImageUrl(lat, lon) {
 
 // Convert temp num to text
 function getTemperatureClass(temp) {
-  if (temp < 250) return "Normal";
-  if (temp < 300) return "Elevated";
-  if (temp < 350) return "High";
+  if (temp < 327) return "Normal";
+  if (temp < 336) return "Elevated";
+  if (temp < 342) return "High";
   return "Critical";
 }
 
 // Convert temp num to color
 function getTemperatureColor(temp) {
-  if (temp < 250) return "#000080";
-  if (temp < 300) return "#0080ff";
-  if (temp < 350) return "#ff8000";
+  if (temp < 327) return "#000080";
+  if (temp < 336) return "#0080ff";
+  if (temp < 342) return "#ff8000";
   return "#ff0000";
 }
 
@@ -96,17 +96,18 @@ const HEATMAP_GRADIENT = {
   1.0: "#ff0000", // Red for highest temps
 };
 
+
 // Filter points by temperature level using consistent naming scheme
 function filterPointsByTemperature(points, filterLevel) {
   if (!points) return [];
   
   switch (filterLevel) {
     case "elevated":
-      return points.filter((p) => p[2] >= 250);
+      return points.filter((p) => p[2] >= 327);
     case "high":
-      return points.filter((p) => p[2] >= 300);
+      return points.filter((p) => p[2] >= 336);
     case "critical":
-      return points.filter((p) => p[2] >= 350);
+      return points.filter((p) => p[2] >= 342);
     case "all":
     default:
       return points;
