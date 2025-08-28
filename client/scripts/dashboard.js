@@ -105,8 +105,12 @@ function updateMap() {
   if (heatLayer) map.removeLayer(heatLayer);
   markersLayer.clearLayers();
 
-  // Create heatmap
-  heatLayer = L.heatLayer(currentData.points, {
+  // Create normalized data for heatmap
+  const normalizedPoints = normalizeTemperatures(currentData.points);
+
+  // Create heatmap with normalized intensities
+  heatLayer = L.heatLayer(normalizedPoints, {
+    minOpacity: 0.7,
     radius: 15,
     blur: 20,
     maxZoom: 10,

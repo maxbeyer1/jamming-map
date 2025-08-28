@@ -231,8 +231,11 @@ function updateMapForCurrentTime() {
 
   if (filteredPoints.length === 0) return;
 
-  // Create heatmap
-  heatLayer = L.heatLayer(filteredPoints, {
+  // Create normalized data for heatmap
+  const normalizedPoints = normalizeTemperatures(filteredPoints);
+
+  // Create heatmap with normalized intensities
+  heatLayer = L.heatLayer(normalizedPoints, {
     radius: 15,
     blur: 20,
     maxZoom: 10,

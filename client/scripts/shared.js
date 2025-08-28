@@ -114,6 +114,26 @@ function filterPointsByTemperature(points, filterLevel) {
   }
 }
 
+// Normalize temperature values for heatmap (min->0.1, max->1.0)
+function normalizeTemperatures(points) {
+  if (!points || points.length === 0) return [];
+  
+  const temperatures = points.map(p => p[2]);
+  const minTemp = Math.min(...temperatures);
+  const maxTemp = Math.max(...temperatures);
+  
+  // Avoid division by zero if all temperatures are the same
+  if (minTemp === maxTemp) {
+    return points.map(([lat, lon, temp]) => [lat, lon, 0.5]);
+  }
+  
+  return points.map(([lat, lon, temp]) => {
+    // Linear scaling: min temp -> 0.1, max temp -> 1.0
+    const normalized = 0.1 + (temp - minTemp) / (maxTemp - minTemp) * 0.9;
+    return [lat, lon, normalized];
+  });
+}
+
 // Initialize base map
 function createDarkBasemap() {
   return L.tileLayer(
