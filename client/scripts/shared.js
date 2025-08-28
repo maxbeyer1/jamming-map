@@ -96,6 +96,23 @@ const HEATMAP_GRADIENT = {
   1.0: "#ff0000", // Red for highest temps
 };
 
+// Filter points by temperature level using consistent naming scheme
+function filterPointsByTemperature(points, filterLevel) {
+  if (!points) return [];
+  
+  switch (filterLevel) {
+    case "elevated":
+      return points.filter((p) => p[2] >= 250);
+    case "high":
+      return points.filter((p) => p[2] >= 300);
+    case "critical":
+      return points.filter((p) => p[2] >= 350);
+    case "all":
+    default:
+      return points;
+  }
+}
+
 // Initialize base map
 function createDarkBasemap() {
   return L.tileLayer(

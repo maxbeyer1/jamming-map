@@ -41,22 +41,7 @@ function filterData() {
 
   if (!allData) return;
 
-  let filteredPoints = allData.points;
-
-  switch (filter) {
-    // TODO: Consistent naming scheme
-    case "elevated":
-      filteredPoints = allData.points.filter((p) => p[2] >= 250 && p[2] < 300);
-      break;
-    case "high":
-      filteredPoints = allData.points.filter((p) => p[2] >= 300 && p[2] < 350);
-      break;
-    case "critical":
-      filteredPoints = allData.points.filter((p) => p[2] >= 350);
-      break;
-    default:
-      filteredPoints = allData.points;
-  }
+  const filteredPoints = filterPointsByTemperature(allData.points, filter);
 
   currentData = { ...allData, points: filteredPoints };
   updateMap();

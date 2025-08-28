@@ -266,18 +266,7 @@ function updateMapForCurrentTime() {
 
 function filterPointsByPowerLevel(points) {
   const filter = document.getElementById("power-filter").value;
-
-  // TODO: Consistent naming scheme for power levels
-  switch (filter) {
-    case "high": // Elevated >250K
-      return points.filter((p) => p[2] >= 250 && p[2] < 300);
-    case "extreme": // High >300K
-      return points.filter((p) => p[2] >= 300 && p[2] < 350);
-    case "critical": // Critical >350K
-      return points.filter((p) => p[2] >= 350);
-    default: // All levels
-      return points;
-  }
+  return filterPointsByTemperature(points, filter);
 }
 
 function onTimelineChange() {
