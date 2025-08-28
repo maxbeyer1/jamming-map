@@ -176,6 +176,26 @@
     </footer>
 
     <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+    <!-- Fix for Leaflet.heat library - uses an outdated version of a dependency, simpleheat,
+     which doesn't include willReadFrequently causing a browser warning -->
+    <script>
+      const originalGetContext = HTMLCanvasElement.prototype.getContext;
+
+      HTMLCanvasElement.prototype.getContext = function (
+        contextType,
+        contextAttributes = {}
+      ) {
+        if (contextType === "2d") {
+          // Add willReadFrequently if not already specified
+          if (!contextAttributes.hasOwnProperty("willReadFrequently")) {
+            contextAttributes.willReadFrequently = true;
+          }
+        }
+        return originalGetContext.call(this, contextType, contextAttributes);
+      };
+    </script>
+
     <!-- https://github.com/Leaflet/Leaflet.heat -->
     <script src="https://cdn.jsdelivr.net/gh/Leaflet/Leaflet.heat/dist/leaflet-heat.js"></script>
 
