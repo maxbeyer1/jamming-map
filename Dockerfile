@@ -1,6 +1,6 @@
-FROM python:3.11-slim
+FROM python:3.12-slim
 
-# Install Node.js
+# Install Node
 RUN apt-get update && apt-get install -y \
     curl \
     build-essential \
@@ -8,18 +8,17 @@ RUN apt-get update && apt-get install -y \
     && apt-get install -y nodejs \
     && rm -rf /var/lib/apt/lists/*
 
-# Create app directory
 WORKDIR /app
 
-# Install Python dependencies
+# Install Python deps
 COPY server/scripts/requirements.txt ./scripts/
 RUN pip install --no-cache-dir -r scripts/requirements.txt
 
-# Copy package files and install Node.js dependencies
+# Install Node deps
 COPY server/package*.json ./
 RUN npm ci --only=production
 
-# Copy server source code
+# Copy server src
 COPY server/ ./
 
 # Copy client static files
@@ -28,13 +27,10 @@ COPY client/ ./public/
 # Create cache directories
 RUN mkdir -p cache/raw_files cache/processed
 
-# Expose port
 EXPOSE 3001
 
-# Set environment variables
 ENV NODE_ENV=production
 ENV PORT=3001
 ENV PYTHON_PATH=python
 
-# Start the application
 CMD ["npm", "start"]
