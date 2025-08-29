@@ -236,6 +236,7 @@ function updateMapForCurrentTime() {
 
   // Create heatmap with normalized intensities
   heatLayer = L.heatLayer(normalizedPoints, {
+    minOpacity: 0.7,
     radius: 15,
     blur: 20,
     maxZoom: 10,
