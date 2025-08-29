@@ -4,6 +4,8 @@ A web application for visualizing and analyzing temperature anomalies from NASA'
 
 Live Website: http://radiowatch.org
 
+_Built for Northwestern CS 396_
+
 ## Installation
 
 ### Prerequisites
