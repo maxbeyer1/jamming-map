@@ -96,11 +96,10 @@ const HEATMAP_GRADIENT = {
   1.0: "#ff0000", // Red for highest temps
 };
 
-
 // Filter points by temperature level using consistent naming scheme
 function filterPointsByTemperature(points, filterLevel) {
   if (!points) return [];
-  
+
   switch (filterLevel) {
     case "elevated":
       return points.filter((p) => p[2] >= 327);
@@ -117,19 +116,19 @@ function filterPointsByTemperature(points, filterLevel) {
 // Normalize temperature values for heatmap (min->0.1, max->1.0)
 function normalizeTemperatures(points) {
   if (!points || points.length === 0) return [];
-  
-  const temperatures = points.map(p => p[2]);
+
+  const temperatures = points.map((p) => p[2]);
   const minTemp = Math.min(...temperatures);
   const maxTemp = Math.max(...temperatures);
-  
+
   // Avoid division by zero if all temperatures are the same
   if (minTemp === maxTemp) {
     return points.map(([lat, lon, temp]) => [lat, lon, 0.5]);
   }
-  
+
   return points.map(([lat, lon, temp]) => {
     // Linear scaling: min temp -> 0.1, max temp -> 1.0
-    const normalized = 0.1 + (temp - minTemp) / (maxTemp - minTemp) * 0.9;
+    const normalized = 0.1 + ((temp - minTemp) / (maxTemp - minTemp)) * 0.9;
     return [lat, lon, normalized];
   });
 }
@@ -146,3 +145,47 @@ function createDarkBasemap() {
     }
   );
 }
+
+// Animation accessibility functionality
+function initializeAnimationToggle() {
+  const toggle = document.getElementById("animation-toggle");
+  const statusSpan = document.getElementById("animation-status");
+
+  if (!toggle || !statusSpan) return;
+
+  // System preference
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+
+  // Check saved preference or default to system preference
+  let animationsDisabled =
+    localStorage.getItem("animations-disabled") === "true" ||
+    prefersReducedMotion;
+
+  // Apply initial state
+  updateAnimationState(animationsDisabled, statusSpan);
+
+  // Handle toggle clicks
+  toggle.addEventListener("click", () => {
+    animationsDisabled = !animationsDisabled;
+    localStorage.setItem("animations-disabled", animationsDisabled.toString());
+    updateAnimationState(animationsDisabled, statusSpan);
+  });
+}
+
+function updateAnimationState(disabled, statusSpan) {
+  document.body.setAttribute("data-animations-disabled", disabled);
+  statusSpan.textContent = disabled ? "Off" : "On";
+}
+
+function shouldReduceMotion() {
+  const prefersReducedMotion = window.matchMedia(
+    "(prefers-reduced-motion: reduce)"
+  ).matches;
+  const userDisabled = localStorage.getItem("animations-disabled") === "true";
+  return prefersReducedMotion || userDisabled;
+}
+
+// Initialize on DOM load
+document.addEventListener("DOMContentLoaded", initializeAnimationToggle);

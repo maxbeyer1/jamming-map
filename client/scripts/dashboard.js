@@ -24,13 +24,17 @@ function initMap() {
 // Refresh data
 async function refreshData() {
   const refreshBtn = document.querySelector(".refresh");
-  refreshBtn.style.transform = "rotate(360deg)";
-  refreshBtn.style.transition = "transform 0.5s";
+  
+  // Only animate if motion is not reduced
+  if (!shouldReduceMotion()) {
+    refreshBtn.style.transform = "rotate(360deg)";
+    refreshBtn.style.transition = "transform 0.5s";
 
-  setTimeout(() => {
-    refreshBtn.style.transform = "";
-    refreshBtn.style.transition = "";
-  }, 500);
+    setTimeout(() => {
+      refreshBtn.style.transform = "";
+      refreshBtn.style.transition = "";
+    }, 500);
+  }
 
   await loadData();
 }

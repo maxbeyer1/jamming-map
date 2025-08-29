@@ -513,6 +513,52 @@ body {
   font-weight: 400;
 }
 
+.animation-toggle {
+  background: none;
+  border: none;
+  color: #b0b0b0;
+  font-family: inherit;
+  font-size: 0.9rem;
+  font-weight: 400;
+  cursor: pointer;
+  padding: 0;
+  transition: color 0.2s ease;
+}
+
+.animation-toggle:hover,
+.animation-toggle:focus {
+  color: #4080ff;
+  outline: none;
+}
+
+.animation-toggle:focus {
+  text-shadow: 0 0 4px rgba(64, 128, 255, 0.5);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+body[data-animations-disabled="true"] *,
+body[data-animations-disabled="true"] *::before,
+body[data-animations-disabled="true"] *::after {
+  animation-duration: 0.01ms !important;
+  animation-iteration-count: 1 !important;
+  transition-duration: 0.01ms !important;
+  scroll-behavior: auto !important;
+}
+
+body[data-animations-disabled="true"] .animation-toggle {
+  transition: color 0.2s ease !important;
+}
+
 *:focus {
   outline: 2px solid #4080ff;
   outline-offset: 2px;
