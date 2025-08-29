@@ -5,17 +5,10 @@ let historicalData = null;
 let currentTimeIndex = 15; // Middle of timeline
 let loadDataTimeout = null; // For debouncing date changes
 
-function initMap() {
-  map = L.map("map", {
-    zoomControl: false,
-  }).setView([30, 0], 2);
-
-  createDarkBasemap().addTo(map);
-
-  markersLayer = L.layerGroup().addTo(map);
-
-  // Make map global var
-  window.map = map;
+function initHistoryMap() {
+  const mapData = initMap();
+  map = mapData.map;
+  markersLayer = mapData.markersLayer;
 }
 
 // Validate that date inputs are complete and valid
@@ -227,7 +220,7 @@ function updateMapForCurrentTime() {
   markersLayer.clearLayers();
 
   // Apply new filter
-  const filteredPoints = filterPointsByPowerLevel(currentData.points);
+  const filteredPoints = filterPointsForHistory(currentData.points);
 
   if (filteredPoints.length === 0) return;
 
@@ -268,7 +261,7 @@ function updateMapForCurrentTime() {
   });
 }
 
-function filterPointsByPowerLevel(points) {
+function filterPointsForHistory(points) {
   const filter = document.getElementById("power-filter").value;
   return filterPointsByTemperature(points, filter);
 }
@@ -302,19 +295,7 @@ function filterData() {
 }
 
 async function refreshData() {
-  const refreshBtn = document.querySelector(".refresh");
-  
-  // Only animate if motion is not reduced
-  if (!shouldReduceMotion()) {
-    refreshBtn.style.transform = "rotate(360deg)";
-    refreshBtn.style.transition = "transform 0.5s";
-
-    setTimeout(() => {
-      refreshBtn.style.transform = "";
-      refreshBtn.style.transition = "";
-    }, 500);
-  }
-
+  animateRefreshButton();
   await loadHistoricalData();
 }
 
@@ -382,7 +363,7 @@ function setDefaultDates() {
 
 // Init everything on load
 document.addEventListener("DOMContentLoaded", function () {
-  initMap();
+  initHistoryMap();
 
   // Set default dates
   setDefaultDates();

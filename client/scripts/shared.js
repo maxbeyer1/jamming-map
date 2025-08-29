@@ -187,5 +187,37 @@ function shouldReduceMotion() {
   return prefersReducedMotion || userDisabled;
 }
 
+// Initialize base map
+function initMap() {
+  const map = L.map("map", {
+    zoomControl: false,
+  }).setView([30, 0], 2);
+
+  createDarkBasemap().addTo(map);
+
+  const markersLayer = L.layerGroup().addTo(map);
+
+  // Make map global
+  window.map = map;
+
+  return { map, markersLayer };
+}
+
+// Refresh button animation
+function animateRefreshButton() {
+  const refreshBtn = document.querySelector(".refresh");
+  
+  // Only animate if motion is not reduced
+  if (!shouldReduceMotion()) {
+    refreshBtn.style.transform = "rotate(360deg)";
+    refreshBtn.style.transition = "transform 0.5s";
+
+    setTimeout(() => {
+      refreshBtn.style.transform = "";
+      refreshBtn.style.transition = "";
+    }, 500);
+  }
+}
+
 // Initialize on DOM load
 document.addEventListener("DOMContentLoaded", initializeAnimationToggle);

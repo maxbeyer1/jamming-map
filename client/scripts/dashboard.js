@@ -5,37 +5,18 @@ let currentData = null;
 let allData = null;
 
 // Init map
-function initMap() {
-  map = L.map("map", {
-    zoomControl: false, // Allow custom controls
-  }).setView([30, 0], 2);
-
-  createDarkBasemap().addTo(map);
-
-  markersLayer = L.layerGroup().addTo(map);
+function initDashboardMap() {
+  const mapData = initMap();
+  map = mapData.map;
+  markersLayer = mapData.markersLayer;
 
   // Map click handler for stats panel
   map.on("click", onMapClick);
-
-  // Make map global
-  window.map = map;
 }
 
 // Refresh data
 async function refreshData() {
-  const refreshBtn = document.querySelector(".refresh");
-  
-  // Only animate if motion is not reduced
-  if (!shouldReduceMotion()) {
-    refreshBtn.style.transform = "rotate(360deg)";
-    refreshBtn.style.transition = "transform 0.5s";
-
-    setTimeout(() => {
-      refreshBtn.style.transform = "";
-      refreshBtn.style.transition = "";
-    }, 500);
-  }
-
+  animateRefreshButton();
   await loadData();
 }
 
@@ -205,6 +186,6 @@ function onMapClick(e) {
 
 // Init when page loads
 document.addEventListener("DOMContentLoaded", function () {
-  initMap();
+  initDashboardMap();
   loadData();
 });
