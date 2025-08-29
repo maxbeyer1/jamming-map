@@ -22,7 +22,7 @@ _Built for Northwestern CS 396_
    cp .env.example .env
    ```
 
-   _Graders: See `GRADING_NOTE.txt` for a ready-to-go `.env` file._
+   _Graders: A ready-to-go `.env` file is included in the zip archive._
 
 2. **Edit `.env` with your credentials:**
 
