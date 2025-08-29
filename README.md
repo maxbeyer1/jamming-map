@@ -6,6 +6,8 @@ Live Website: http://radiowatch.org
 
 _Built for Northwestern CS 396_
 
+Project Video: https://drive.google.com/file/d/1TfFnp13EbkZfExww5TnZogG6B0NIujQg/view?usp=sharing
+
 ## Installation
 
 ### Prerequisites
