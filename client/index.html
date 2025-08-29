@@ -16,6 +16,41 @@
     <!-- <link rel="stylesheet" href="tests/diagnostic.css" /> -->
   </head>
   <body>
+    <noscript>
+      <div
+        style="
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          z-index: 9999;
+          background: #ff4444;
+          color: white;
+          padding: 12px;
+          text-align: center;
+          font-weight: bold;
+          box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+        "
+      >
+        JavaScript is required for this page. Please enable JavaScript in your
+        browser settings.
+      </div>
+      <style>
+        /* Prevent infinite loading */
+        #map-loading {
+          display: none !important;
+        }
+        .map-controls,
+        .control-btn,
+        .power-filter {
+          opacity: 0.5;
+          pointer-events: none;
+        }
+        #animation-toggle {
+          display: none;
+        }
+      </style>
+    </noscript>
     <header class="site-header">
       <div class="header-content">
         <div class="site-branding">
@@ -121,6 +156,30 @@
               alt="World map showing SMAP temperature data visualization with color-coded regions"
               class="map-placeholder"
             />
+            <noscript>
+              <div
+                style="
+                  position: absolute;
+                  top: 50%;
+                  left: 50%;
+                  transform: translate(-50%, -50%);
+                  background: rgba(0, 0, 0, 0.8);
+                  color: white;
+                  padding: 20px;
+                  border-radius: 8px;
+                  text-align: center;
+                  max-width: 400px;
+                  z-index: 1000;
+                "
+              >
+                <h3 style="margin: 0 0 10px 0; color: #ff6b6b">
+                  Map Unavailable
+                </h3>
+                <p style="margin: 0; line-height: 1.4">
+                  Please enable JavaScript.
+                </p>
+              </div>
+            </noscript>
           </div>
         </div>
 
@@ -170,7 +229,11 @@
             Data Source
           </a>
           <span class="footer-separator">|</span>
-          <button id="animation-toggle" class="animation-toggle" aria-label="Toggle animations">
+          <button
+            id="animation-toggle"
+            class="animation-toggle"
+            aria-label="Toggle animations"
+          >
             Animations: <span id="animation-status">On</span>
           </button>
           <span class="footer-separator">|</span>
